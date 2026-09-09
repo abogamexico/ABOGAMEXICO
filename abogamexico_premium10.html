@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AbogaMéxico — Consultorio Jurídico Virtual</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════
+   ABOGAMÉXICO — Premium Stylesheet v2.0
+   Paleta: #00183D | #B9CEED | #CAA181 | #000 | #fff
+═══════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --azul:    #00183D;
+  --azul-oscuro: #001128;
+  --celeste: #B9CEED;
+  --dorado:  #CAA181;
+  --dorado-claro: #E3C9B0;
+  --negro:   #000000;
+  --blanco:  #FFFFFF;
+  --gris:    #f5f7fa;
+  --font-sans:  'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 4px 12px rgba(0, 24, 61, 0.06);
+  --shadow-md: 0 12px 32px rgba(0, 24, 61, 0.10);
+  --shadow-lg: 0 20px 50px rgba(0, 24, 61, 0.16);
+  --shadow-gold: 0 10px 25px rgba(202, 161, 129, 0.3);
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--negro);
+  background: var(--blanco);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
+h2 { font-size: clamp(2rem, 4vw, 3rem); color: var(--azul); }
+h3 { font-size: 1.25rem; color: var(--azul); }
+p  { line-height: 1.7; color: #4a5568; font-weight: 400; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--dorado) 0%, #b88c6a 100%);
+  color: var(--blanco);
+  border: none;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-gold);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+.btn-gold:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(202, 161, 129, 0.4); }
+.btn-gold:hover::after { left: 100%; }
+.btn-gold:active { transform: scale(0.98); }
+.btn-gold.btn-lg { padding: 16px 36px; font-size: 1.05rem; border-radius: 10px; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--azul);
+  border: 2px solid rgba(0, 24, 61, 0.15);
+  padding: 12px 26px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-outline:hover { border-color: var(--azul); background: rgba(0, 24, 61, 0.03); transform: translateY(-2px); }
+
+.btn-outline-light {
+  background: transparent;
+  color: var(--blanco);
+  border: 1.5px solid rgba(185, 206, 237, 0.4);
+  padding: 16px 36px;
+  border-radius: 10px;
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.btn-outline-light:hover { background: rgba(185, 206, 237, 0.1); border-color: var(--celeste); transform: translateY(-2px); }
+
+.btn-full { width: 100%; margin-top: 6px; }
+
+/* NAVBAR */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 16px 0;
+  transition: all 0.4s ease;
+}
+#navbar.scrolled {
+  background: rgba(0, 24, 61, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(185, 206, 237, 0.1);
+  padding: 10px 0;
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.logo-mark svg { display: block; filter: drop-shadow(0 0 10px rgba(185, 206, 237, 0.2)); }
+.logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--blanco); letter-spacing: 0.06em; }
+.logo-sub { font-size: 0.62rem; color: var(--celeste); letter-spacing: 0.1em; font-weight: 500; margin-top: 2px; }
+.nav-divider { width: 1px; height: 28px; background: rgba(185,206,237,.25); flex-shrink: 0; }
+.nav-links { display: flex; gap: 32px; margin-left: auto; }
+.nav-links a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 0;
+  width: 0; height: 2px;
+  background: var(--dorado);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: var(--celeste); }
+.nav-links a:hover::after { width: 100%; }
+.nav-actions { display: flex; gap: 12px; align-items: center; }
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; margin-left: auto; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--blanco); border-radius: 2px; transition: all 0.3s; }
+.mobile-menu { display: none; flex-direction: column; padding: 20px 24px; background: var(--azul-oscuro); gap: 16px; border-top: 1px solid rgba(185, 206, 237, 0.1); }
+.mobile-menu a { color: rgba(255, 255, 255, 0.85); text-decoration: none; font-size: 1rem; padding: 6px 0; transition: color 0.2s; }
+.mobile-menu a:hover { color: var(--celeste); }
+.mobile-menu.open { display: flex; }
+
+/* HERO */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 80px;
+  background: linear-gradient(135deg, var(--azul) 0%, var(--azul-oscuro) 100%);
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; background: var(--azul); }
+.hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: 1;
+}
+.hero-content { position: relative; z-index: 2; max-width: 560px; margin-left: 0; margin-right: auto; padding: 60px 32px 60px 48px; }
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(185, 206, 237, 0.1);
+  border: 1px solid rgba(185, 206, 237, 0.3);
+  backdrop-filter: blur(10px);
+  color: var(--celeste);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 8px 20px;
+  border-radius: 50px;
+  margin-bottom: 28px;
+}
+.hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--dorado); flex-shrink: 0; }
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+  font-weight: 800;
+  color: var(--blanco);
+  line-height: 1.06;
+  margin-bottom: 24px;
+  letter-spacing: -0.03em;
+}
+.hero-title em { font-style: normal; color: transparent; background: linear-gradient(135deg, var(--celeste), var(--dorado)); -webkit-background-clip: text; background-clip: text; }
+.hero-desc { color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1.8; margin-bottom: 40px; max-width: 550px; }
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 60px; }
+.hero-stats { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+.hstat { display: flex; flex-direction: column; }
+.hstat-n { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--blanco); line-height: 1; }
+.hstat-l { font-size: 0.82rem; color: rgba(185,206,237,0.8); margin-top: 5px; }
+.hstat { padding: 0 28px; border-right: 1px solid rgba(185,206,237,0.2); }
+.hstat:first-child { padding-left: 0; }
+.hstat:last-child { border-right: none; }
+
+/* SECTIONS */
+.section { padding: 120px 0; }
+.sec-white { background: var(--blanco); }
+.sec-gray { background: var(--gris); }
+.sec-blue { background: linear-gradient(180deg, var(--azul) 0%, var(--azul-oscuro) 100%); position: relative; overflow: hidden; }
+.sec-blue::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(202,161,129,0.1) 0%, transparent 70%); z-index: 0; }
+.sec-head { text-align: center; margin-bottom: 64px; position: relative; z-index: 1; }
+.sec-head h2 { margin-bottom: 16px; }
+.sec-head p { font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
+.sec-head.light h2 { color: var(--blanco); }
+.sec-head.light p { color: rgba(185,206,237,0.8); }
+
+/* STEPS */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
+.step {
+  background: var(--blanco);
+  border: 1px solid #e8ecf2;
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.step::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--dorado), transparent); opacity: 0; transition: opacity 0.3s; }
+.step:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.step:hover::before { opacity: 1; }
+.step-num { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; color: var(--celeste); line-height: 1; position: absolute; top: 24px; right: 28px; opacity: 0.3; transition: opacity 0.3s; }
+.step:hover .step-num { opacity: 0.6; }
+.step-ico { font-size: 1.8rem; margin-bottom: 18px; }
+.step h3 { margin-bottom: 12px; font-size: 1.3rem; }
+.step p { font-size: 0.95rem; color: #666; }
+
+/* SEARCH */
+.search-wrap { margin-bottom: 48px; position: relative; z-index: 1; }
+.search-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  align-items: center;
+}
+.search-row select {
+  flex: 1;
+  min-width: 180px;
+  padding: 14px 18px;
+  border: 1px solid rgba(185, 206, 237, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.05);
+  color: var(--blanco);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B9CEED' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.search-row select:focus { border-color: var(--dorado); background-color: rgba(255,255,255,0.1); }
+.search-row select option { background: var(--azul); color: #fff; }
+
+/* LAWYER CARDS */
+.lawyers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; position: relative; z-index: 1; }
+.lcard {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(185,206,237,0.15);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.lcard:hover { background: rgba(255,255,255,0.1); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); border-color: var(--dorado); }
+.lcard-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
+.lavatar {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a3a6b, #0d2244);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--celeste);
+  flex-shrink: 0;
+  border: 2px solid rgba(185,206,237,0.4);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.lcard-info h4 { color: var(--blanco); font-size: 1.05rem; margin-bottom: 4px; font-family: var(--font-display); }
+.cedula-tag { color: var(--celeste); font-size: 0.78rem; opacity: 0.8; }
+.ltags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.ltag {
+  background: rgba(202,161,129,0.15);
+  border: 1px solid rgba(202,161,129,0.3);
+  color: var(--dorado-claro);
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 50px;
+  letter-spacing: 0.02em;
+}
+.lcard-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-top: 1px solid rgba(185,206,237,0.1); padding-top: 16px; }
+.lrating { color: var(--dorado); font-size: 0.88rem; font-weight: 600; }
+.lloc { color: rgba(255,255,255,0.6); font-size: 0.82rem; }
+.lprice { color: var(--blanco); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px; font-family: var(--font-display); }
+.lprice span { color: var(--celeste); font-size: 0.82rem; font-weight: 400; }
+.no-results { color: rgba(185,206,237,0.6); text-align: center; padding: 48px 0; grid-column: 1/-1; font-size: 0.95rem; }
+
+/* ESPECIALIDADES */
+.specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+.spec {
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 36px 24px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--blanco);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.spec:hover { border-color: transparent; background: linear-gradient(135deg, var(--azul), var(--azul-oscuro)); transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.spec:hover h4, .spec:hover p { color: var(--blanco); }
+.spec-ico { font-size: 2.5rem; margin-bottom: 16px; display: inline-block; transition: transform 0.3s; }
+.spec:hover .spec-ico { transform: scale(1.2) rotate(-5deg); }
+.spec h4 { font-size: 1.05rem; margin-bottom: 8px; color: var(--azul); font-family: var(--font-display); font-weight: 700; transition: color 0.3s; }
+.spec p { font-size: 0.88rem; transition: color 0.3s; }
+
+/* PRECIOS */
+.price-wrap { max-width: 560px; margin: 0 auto; position: relative; z-index: 1; }
+.pcard {
+  background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(202,161,129,0.4);
+  border-radius: var(--radius-lg);
+  padding: 56px 56px 48px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.pbadge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--dorado), #b88c6a);
+  color: var(--blanco);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 6px 20px;
+  border-radius: 50px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-gold);
+}
+.pamt { font-family: var(--font-display); font-size: 4rem; font-weight: 800; color: var(--blanco); line-height: 1; margin-bottom: 8px; }
+.pamt small { font-size: 1.1rem; font-weight: 300; color: var(--celeste); }
+.pmxn { color: var(--celeste); opacity: 0.75; font-size: 0.95rem; margin-bottom: 30px; font-weight: 500; }
+.pfeats { list-style: none; text-align: left; margin-bottom: 38px; }
+.pfeats li { color: rgba(255,255,255,0.85); font-size: 0.95rem; padding: 11px 0; border-bottom: 1px solid rgba(185,206,237,0.08); display: flex; align-items: center; gap: 10px; }
+.pfeats li::before { content: '✓'; color: var(--dorado); font-weight: 700; font-size: 1.05rem; flex-shrink: 0; }
+
+/* FOOTER */
+footer { background: var(--azul-oscuro); padding: 80px 0 40px; border-top: 1px solid rgba(185,206,237,0.1); }
+.foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 60px; }
+.foot-brand p { color: rgba(185,206,237,0.7); font-size: 0.9rem; margin-top: 18px; max-width: 300px; line-height: 1.7; }
+.foot-col h5 { color: var(--blanco); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.07em; margin-bottom: 22px; font-family: var(--font-display); text-transform: uppercase; }
+.foot-col a { display: block; color: rgba(185,206,237,0.65); font-size: 0.88rem; margin-bottom: 11px; transition: all 0.2s; text-decoration: none; }
+.foot-col a:hover { color: var(--dorado); transform: translateX(4px); }
+.foot-bottom { border-top: 1px solid rgba(185,206,237,0.1); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.foot-bottom p { color: rgba(255,255,255,0.45); font-size: 0.82rem; }
+
+/* MODAL */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,17,40,0.8); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+.overlay.open { display: flex; }
+.modal { background: var(--blanco); border-radius: var(--radius-lg); max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.4); animation: mIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes mIn { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: none; } }
+.modal-x { position: absolute; top: 18px; right: 18px; background: #f0f0f0; border: none; font-size: 1rem; color: #666; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s; z-index: 2; }
+.modal-x:hover { background: var(--azul); color: var(--blanco); }
+.m-body { padding: 48px 44px 40px; }
+.m-head { margin-bottom: 30px; }
+.m-head h3 { font-size: 1.8rem; color: var(--azul); margin-bottom: 8px; }
+.m-head p { font-size: 0.93rem; color: #666; }
+.m-tabs { display: flex; gap: 0; margin-bottom: 28px; background: #f0f4f8; border-radius: 10px; padding: 4px; }
+.mtab { flex: 1; padding: 12px; background: none; border: none; font-family: var(--font-sans); font-size: 0.9rem; font-weight: 600; cursor: pointer; color: #666; border-radius: 8px; transition: all 0.3s; }
+.mtab.on { background: var(--azul); color: #fff; box-shadow: 0 4px 12px rgba(0,24,61,0.2); }
+.tab-pane { display: none; }
+.tab-pane.on { display: block; }
+
+/* FORMS */
+.fg { margin-bottom: 18px; }
+.fg label { display: block; font-size: 0.82rem; font-weight: 600; color: #444; margin-bottom: 7px; }
+.fg input, .fg select, .fg textarea { width: 100%; padding: 13px 15px; border: 1.5px solid #e0e4ea; border-radius: 10px; font-family: var(--font-sans); font-size: 0.92rem; color: var(--negro); transition: all 0.3s; outline: none; background: #fff; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--dorado); box-shadow: 0 0 0 4px rgba(202,161,129,0.1); }
+.fg textarea { resize: vertical; min-height: 76px; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fsec { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em; color: var(--azul); margin-bottom: 14px; margin-top: 6px; padding-bottom: 7px; border-bottom: 2px solid #f0f4f8; text-transform: uppercase; }
+.fnote { font-size: 0.82rem; color: #999; text-align: center; margin-top: 14px; }
+.fnote a { color: var(--dorado); text-decoration: none; font-weight: 600; }
+.ferr { font-size: 0.76rem; color: #dc2626; margin-top: 5px; }
+.fok { font-size: 0.76rem; color: #16a34a; margin-top: 5px; }
+
+/* PAGO */
+.pay-summary { background: linear-gradient(135deg, #f8faff, #f0f4f8); border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px; margin-bottom: 22px; }
+.pay-amt { font-family: var(--font-display); font-size: 2.4rem; font-weight: 800; color: var(--azul); line-height: 1; }
+.pay-desc { font-size: 0.85rem; color: #666; margin-top: 5px; }
+.pay-methods { display: flex; gap: 10px; margin-bottom: 18px; }
+.pmethod { flex: 1; padding: 13px; border: 2px solid #e0e0e0; border-radius: 10px; background: #fff; cursor: pointer; text-align: center; font-size: 0.88rem; font-weight: 600; transition: all 0.3s; }
+.pmethod.on { border-color: var(--dorado); background: rgba(202,161,129,0.08); color: var(--azul); box-shadow: 0 4px 12px rgba(202,161,129,0.12); }
+.stripe-note { text-align: center; font-size: 0.76rem; color: #bbb; margin-top: 12px; }
+
+/* CONFIRM */
+.confirm { text-align: center; padding: 14px 0; }
+.confirm-ico { font-size: 3.5rem; margin-bottom: 18px; }
+.confirm h3 { color: var(--azul); margin-bottom: 10px; font-size: 1.6rem; }
+.confirm p { font-size: 0.92rem; color: #555; margin-bottom: 10px; }
+.room-link { display: inline-block; background: linear-gradient(135deg, #f0f5ff, #e2e8f0); border: 1px solid var(--celeste); color: var(--azul); font-size: 0.8rem; font-family: monospace; padding: 10px 18px; border-radius: 10px; word-break: break-all; margin: 12px 0; font-weight: 600; }
+.confirm-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
+
+/* VIDEO */
+.vroom { background: linear-gradient(180deg, var(--azul), var(--azul-oscuro)); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid rgba(185,206,237,0.2); }
+.vroom-head { background: rgba(0,0,0,0.4); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(185,206,237,0.1); }
+.vroom-head h4 { color: #fff; font-size: 0.92rem; }
+.live { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 12px; border-radius: 50px; letter-spacing: 0.06em; display: flex; align-items: center; gap: 6px; box-shadow: 0 0 15px rgba(231,76,60,0.4); }
+.live::before { content: ''; width: 7px; height: 7px; background: #fff; border-radius: 50%; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.vroom iframe { width: 100%; height: 380px; border: none; display: block; }
+.vroom-ctrl { background: rgba(0,0,0,0.55); padding: 14px; display: flex; justify-content: center; gap: 18px; border-top: 1px solid rgba(185,206,237,0.1); }
+.vbtn { width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+.vbtn:hover { transform: scale(1.1); }
+.vbtn.mic, .vbtn.cam { background: rgba(255,255,255,0.14); color: #fff; }
+.vbtn.end { background: #c0392b; color: #fff; box-shadow: 0 0 18px rgba(192,57,43,0.45); }
+
+/* REVEAL */
+.rv { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+.rv.in { opacity: 1; transform: none; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f0f4f8; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--azul), var(--dorado)); border-radius: 4px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .nav-links, .nav-actions { display: none; }
+  .hamburger { display: flex; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .hero-content { margin-left: 0; }
+}
+@media (max-width: 640px) {
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .hero-stats { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .hstat { border: none; padding: 0; }
+  .frow { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .foot-bottom { flex-direction: column; text-align: center; }
+  .m-body { padding: 32px 20px 28px; }
+  .pcard { padding: 36px 24px 32px; }
+  .confirm-btns { flex-direction: column; }
+  .section { padding: 80px 0; }
+}
+
+/* ── NUEVA SECCIÓN EXPERIENCIA ── */
+.experience-box {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 500px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(185, 206, 237, 0.2);
+}
+.experience-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.experience-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 17, 40, 0.9) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
+}
+.experience-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(185, 206, 237, 0.3);
+  border-radius: var(--radius-md);
+  padding: 24px 32px;
+  color: #fff;
+  max-width: 500px;
+}
+.experience-card h4 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  color: #fff;
+}
+.experience-card p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+/* ── HERO BACKGROUND IMAGEN ── */
+/* Mapa AI — fade overlay: sólido izq, transparente derecha */
+.hero-map-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right,
+    rgba(0,13,31,1) 0%,
+    rgba(0,13,31,0.97) 38%,
+    rgba(0,13,31,0.75) 50%,
+    rgba(0,13,31,0.2) 68%,
+    rgba(0,13,31,0.05) 100%
+  );
+  z-index: 1;
+}
+@keyframes dashFlow {
+  to { stroke-dashoffset: -200; }
+}
+@keyframes pulseNode {
+  0%,100% { r: 5; opacity: 1; }
+  50% { r: 9; opacity: 0.6; }
+}
+@keyframes glowPulse {
+  0%,100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+/* ── EXPERIENCE GRID ── */
+.experience-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+.experience-text h2 { margin-bottom: 18px; }
+.experience-text p { margin-bottom: 16px; font-size: 1rem; }
+.experience-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 28px;
+}
+.exp-stat {
+  background: var(--gris);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border-left: 4px solid var(--dorado);
+}
+.exp-stat-n {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--azul);
+  line-height: 1;
+}
+.exp-stat-l {
+  font-size: 0.82rem;
+  color: #666;
+  margin-top: 5px;
+}
+@media (max-width: 860px) {
+  .experience-grid { grid-template-columns: 1fr; }
+  .experience-box { height: 380px; }
+}
+
+/* ── EXPERIENCE GRID ── */
+.experience-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+.experience-text h2 { margin-bottom: 18px; }
+.experience-text p { margin-bottom: 16px; font-size: 1rem; }
+.experience-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 28px;
+}
+.exp-stat {
+  background: var(--gris);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border-left: 4px solid var(--dorado);
+}
+.exp-stat-n {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--azul);
+  line-height: 1;
+}
+.exp-stat-l {
+  font-size: 0.82rem;
+  color: #666;
+  margin-top: 5px;
+}
+@media (max-width: 860px) {
+  .experience-grid { grid-template-columns: 1fr; }
+  .experience-box { height: 380px; }
+}
+
+/* ── VIDEOCALL SCENE (realista corporativa) ── */
+.videocall-scene {
+  width: 100%; height: 100%;
+  background: linear-gradient(145deg, #001428 0%, #00183D 40%, #0a2240 70%, #001020 100%);
+  display: flex; align-items: stretch; justify-content: stretch;
+  position: relative; overflow: hidden;
+}
+/* Simula una habitación elegante con luz dorada lateral */
+.videocall-scene::after {
+  content: '';
+  position: absolute;
+  right: -80px; top: 50%;
+  transform: translateY(-50%);
+  width: 300px; height: 500px;
+  background: radial-gradient(ellipse, rgba(202,161,129,0.22) 0%, transparent 70%);
+  pointer-events: none;
+}
+.vc-office {
+  position: relative;
+  width: 90%; max-width: 420px;
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  z-index: 2;
+}
+/* Luz ambiental dorada */
+.vc-ambient-light {
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(202,161,129,0.18) 0%, transparent 70%);
+  top: -60px; right: -60px;
+  pointer-events: none;
+  animation: glowPulse 4s ease-in-out infinite;
+}
+/* Escritorio */
+.vc-desk {
+  width: 100%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+  border: 1px solid rgba(185,206,237,0.15);
+  border-radius: 16px;
+  padding: 20px 24px 14px;
+}
+/* Laptop */
+.vc-laptop {
+  background: #0d1f3a;
+  border-radius: 10px 10px 4px 4px;
+  border: 1.5px solid rgba(185,206,237,0.25);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.vc-screen {
+  background: linear-gradient(135deg, #071525, #0a2040);
+  padding: 14px;
+  min-height: 160px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative;
+}
+/* Ventana cliente en pantalla */
+.vc-client-window {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(185,206,237,0.07);
+  border: 1px solid rgba(185,206,237,0.18);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+.vc-client-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, #1a3a6b, #0d2244);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700; color: var(--celeste);
+  border: 1.5px solid rgba(185,206,237,0.35);
+  flex-shrink: 0;
+}
+.vc-client-info { display: flex; flex-direction: column; }
+.vc-client-name { color: #fff; font-size: 0.82rem; font-weight: 600; }
+.vc-client-loc { color: rgba(185,206,237,0.65); font-size: 0.7rem; margin-top: 2px; }
+/* Controles de videollamada */
+.vc-call-controls {
+  display: flex; gap: 8px; justify-content: center;
+  margin-top: 10px;
+}
+.vc-ctrl-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+}
+.vc-ctrl-dot.red { background: #c0392b; box-shadow: 0 0 10px rgba(192,57,43,0.5); }
+.vc-ctrl-dot.green { background: #27ae60; }
+.vc-ctrl-dot.blue { background: rgba(185,206,237,0.2); border: 1px solid rgba(185,206,237,0.3); }
+/* Abogado debajo */
+.vc-lawyer {
+  width: 100%;
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(202,161,129,0.08);
+  border: 1px solid rgba(202,161,129,0.25);
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+.vc-lawyer-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, #CAA181, #8a6a52);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(202,161,129,0.3);
+}
+.vc-lawyer-details { display: flex; flex-direction: column; gap: 2px; }
+.vc-lawyer-name { color: #fff; font-size: 0.9rem; font-weight: 600; }
+.vc-lawyer-spec { color: rgba(185,206,237,0.7); font-size: 0.74rem; }
+.vc-cedula-badge {
+  display: inline-block;
+  background: rgba(39,174,96,0.15);
+  border: 1px solid rgba(39,174,96,0.4);
+  color: #6fcf97;
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-top: 3px;
+  width: fit-content;
+}
+/* Estrellas decorativas en el fondo */
+.videocall-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(185,206,237,0.4) 1px, transparent 1px),
+    radial-gradient(circle, rgba(185,206,237,0.25) 1px, transparent 1px);
+  background-size: 80px 80px, 50px 50px;
+  background-position: 0 0, 25px 25px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+
+
+/* ── LAWYER PANEL ── */
+.lawyer-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+  margin-bottom: 48px;
+}
+.lp-card {
+  background: var(--blanco);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+  overflow: hidden;
+}
+.lp-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 3px;
+  background: linear-gradient(90deg, var(--dorado), var(--celeste));
+  transition: width 0.4s ease;
+}
+.lp-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); border-color: transparent; }
+.lp-card:hover::after { width: 100%; }
+.lp-card-icon { font-size: 2.2rem; margin-bottom: 16px; }
+.lp-card h3 { color: var(--azul); margin-bottom: 10px; font-size: 1.2rem; }
+.lp-card p { font-size: 0.9rem; color: #666; margin-bottom: 18px; line-height: 1.65; }
+.lp-features { list-style: none; padding: 0; }
+.lp-features li {
+  font-size: 0.85rem;
+  color: #444;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f4f8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lp-features li::before { content: '→'; color: var(--dorado); font-weight: 700; }
+.lp-cta { text-align: center; }
+.lp-cta-box {
+  background: linear-gradient(135deg, var(--azul), var(--azul-oscuro));
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  border: 1px solid rgba(202,161,129,0.3);
+  box-shadow: var(--shadow-lg);
+}
+.lp-cta-box h3 { color: var(--blanco); font-size: 1.6rem; margin-bottom: 10px; }
+.lp-cta-box p { color: rgba(185,206,237,0.85); font-size: 1rem; max-width: 500px; margin: 0 auto; }
+
+/* ── MODAL LOGIN ABOGADO ── */
+.modal-lawyer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,24,61,0.06);
+  border: 1px solid rgba(0,24,61,0.12);
+  color: var(--azul);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+/* STEPS GRID 4 columns on wide screens */
+@media (min-width: 900px) {
+  .steps { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 640px) {
+  .lp-cta-box { padding: 32px 22px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAVBAR ═══════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 230 160" width="36" height="25">
+          <polygon points="0,155 31,155 73,0 42,0" fill="#000"/>
+          <polygon points="68,0 99,0 123,155 92,155" fill="#000"/>
+          <polygon points="105,155 136,155 169,0 138,0" fill="#000"/>
+          <polygon points="165,0 196,0 230,155 199,155" fill="#000"/>
+          <rect x="53" y="83" width="96" height="16" rx="3" fill="#B9CEED"/>
+          <polygon points="0,155 31,155 73,0 42,0" fill="none" stroke="#B9CEED" stroke-width="5" opacity=".65"/>
+          <polygon points="68,0 99,0 123,155 92,155" fill="none" stroke="#B9CEED" stroke-width="5" opacity=".65"/>
+          <polygon points="105,155 136,155 169,0 138,0" fill="none" stroke="#B9CEED" stroke-width="5" opacity=".65"/>
+          <polygon points="165,0 196,0 230,155 199,155" fill="none" stroke="#B9CEED" stroke-width="5" opacity=".65"/>
+        </svg>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="logo-text">
+        <span class="logo-name">ABOGAMÉXICO</span>
+        <span class="logo-sub">Consultorio Jurídico Virtual</span>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#abogados">Abogados</a>
+      <a href="#especialidades">Especialidades</a>
+      <a href="#panel-abogados">Abogados</a>
+      <a href="#precios">Precios</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn btn-outline-light" onclick="openModal('login')">Iniciar sesión</button>
+      <button class="btn btn-gold" onclick="openModal('register')">Registrarse</button>
+    </div>
+    <button class="hamburger" id="ham" onclick="toggleMenu()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mmenu">
+    <a href="#como-funciona" onclick="closeMenu()">Cómo funciona</a>
+    <a href="#abogados" onclick="closeMenu()">Abogados</a>
+    <a href="#especialidades" onclick="closeMenu()">Especialidades</a>
+    <a href="#panel-abogados" onclick="closeMenu()">Abogados</a>
+    <a href="#precios" onclick="closeMenu()">Precios</a>
+    <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">
+      <button class="btn btn-outline-light" onclick="openModal('login');closeMenu()">Iniciar sesión</button>
+      <button class="btn btn-gold" onclick="openModal('register');closeMenu()">Registrarse</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div class="hero-bg">
+    <canvas class="hero-canvas" id="heroCanvas"></canvas>
+    <!-- Mapa Norteamérica generado con IA (Higgsfield GPT Image 2) — lado derecho -->
+    <img
+      id="heroMapImg"
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_3J1WIqLC1JL8GN9nx3Mi7vvxL9n/hf_20260908_234016_d97ba589-e224-493d-a7d0-662812c28cd9.png"
+      alt="Mapa de conexiones legales USA-México"
+      style="position:absolute;right:0;top:0;width:52%;height:100%;object-fit:cover;object-position:center center;z-index:0;"
+    />
+    <!-- Gradiente de fusión: izquierda oscura → mapa visible a la derecha -->
+    <div class="hero-map-fade"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Justicia digital sin fronteras</div>
+    <h1 class="hero-title">Tu abogado en México,<br/><em>donde sea que estés.</em></h1>
+    <p class="hero-desc">Conectamos a mexicanos en EE.UU. con abogados certificados en México. Videollamadas seguras, pagos en línea y gestión de casos 100% remota.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-gold btn-lg" onclick="openModal('register-client')">Agenda tu consulta express</button>
+      <button class="btn btn-outline-light btn-lg" onclick="goTo('como-funciona')">Cómo funciona</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n">+500</div><div class="hstat-l">Abogados certificados</div></div>
+      <div class="hstat"><div class="hstat-n">32</div><div class="hstat-l">Estados de México</div></div>
+      <div class="hstat"><div class="hstat-n">$49.99</div><div class="hstat-l">USD por consulta</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CÓMO FUNCIONA ═══════════════ -->
+<section class="section sec-white" id="como-funciona">
+  <div class="container">
+    <div class="sec-head rv">
+      <h2>¿Cómo funciona?</h2>
+      <p>Acceso inmediato a asesoría legal en México desde cualquier parte del mundo, sin trámites ni filas.</p>
+    </div>
+    <div class="steps">
+      <div class="step rv">
+        <div class="step-num">01</div>
+        <div class="step-ico">📅</div>
+        <h3>Agenda tu consulta</h3>
+        <p>Selecciona fecha y hora disponible. Sin necesidad de buscar abogados — nuestra plataforma te conecta directamente con un especialista disponible.</p>
+      </div>
+      <div class="step rv" style="transition-delay:.1s">
+        <div class="step-num">02</div>
+        <div class="step-ico">💳</div>
+        <h3>Paga de forma segura</h3>
+        <p>Paga $49.99 USD con tarjeta o PayPal a través de nuestra pasarela segura Stripe. Confirmación inmediata por correo electrónico.</p>
+      </div>
+      <div class="step rv" style="transition-delay:.2s">
+        <div class="step-num">03</div>
+        <div class="step-ico">📹</div>
+        <h3>Videollamada de asesoría</h3>
+        <p>Conéctate desde tu navegador, sin descargas. Un abogado certificado te asesora en vivo sobre tu caso legal en México.</p>
+      </div>
+      <div class="step rv" style="transition-delay:.3s">
+        <div class="step-num">04</div>
+        <div class="step-ico">⚖️</div>
+        <h3>Cita con especialista</h3>
+        <p>Si tu caso requiere representación, agendas y pagas una cita con un abogado especialista en tu área legal. Todo dentro de la plataforma.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ESPECIALIDADES ═══════════════ -->
+<section class="section sec-white" id="especialidades">
+  <div class="container">
+    <div class="sec-head rv">
+      <h2>Especialidades</h2>
+      <p>Las áreas legales más demandadas por la comunidad mexicana en EE.UU.</p>
+    </div>
+    <div class="specs">
+      <div class="spec rv" style="transition-delay:0s">
+        <div class="spec-ico">⚖️</div>
+        <h4>Derecho Civil</h4>
+        <p>Contratos, deudas, sucesiones, responsabilidad civil y obligaciones.</p>
+      </div>
+      <div class="spec rv" style="transition-delay:.05s">
+        <div class="spec-ico">🛂</div>
+        <h4>Derecho Migratorio</h4>
+        <p>Visas, residencias, trámites consulares, doble nacionalidad.</p>
+      </div>
+      <div class="spec rv" style="transition-delay:.1s">
+        <div class="spec-ico">👨‍👩‍👧</div>
+        <h4>Derecho Familiar</h4>
+        <p>Divorcios, herencias, custodia, adopción, pensión alimenticia.</p>
+      </div>
+      <div class="spec rv" style="transition-delay:.15s">
+        <div class="spec-ico">🔒</div>
+        <h4>Derecho Penal</h4>
+        <p>Defensa penal, amparos, extradición, asesoría criminal.</p>
+      </div>
+      <div class="spec rv" style="transition-delay:.2s">
+        <div class="spec-ico">🏠</div>
+        <h4>Derecho Inmobiliario</h4>
+        <p>Compraventa, escrituras, hipotecas, arrendamientos.</p>
+      </div>
+      <div class="spec rv" style="transition-delay:.25s">
+        <div class="spec-ico">📊</div>
+        <h4>Derecho Mercantil</h4>
+        <p>Empresas, sociedades, contratos comerciales, quiebras.</p>
+      </div>
+      <div class="spec rv" style="transition-delay:.3s">
+        <div class="spec-ico">🧾</div>
+        <h4>Derecho Fiscal</h4>
+        <p>SAT, declaraciones, controversias fiscales, impuestos.</p>
+      </div>
+      <div class="spec rv" style="transition-delay:.35s">
+        <div class="spec-ico">🏥</div>
+        <h4>Seguridad Social</h4>
+        <p>IMSS, ISSSTE, pensiones, incapacidades, prestaciones.</p>
+      </div>
+      <div class="spec rv" style="transition-delay:.4s">
+        <div class="spec-ico">🏛️</div>
+        <h4>Derecho Administrativo</h4>
+        <p>Trámites gubernamentales, licitaciones, sanciones, permisos.</p>
+      </div>
+      <div class="spec rv" style="transition-delay:.45s">
+        <div class="spec-ico">🌾</div>
+        <h4>Derecho Agrario</h4>
+        <p>Ejidos, tierras comunales, conflictos rurales, propiedad agraria.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PRECIOS ═══════════════ -->
+
+<!-- ═══════════════ EXPERIENCIA ═══════════════ -->
+<section class="section sec-white" id="experiencia">
+  <div class="container">
+    <div class="experience-grid">
+      <!-- Texto izquierda -->
+      <div class="experience-text rv">
+        <h2>Justicia accesible desde cualquier lugar</h2>
+        <p>Sabemos que vivir lejos de México no significa dejar de resolver tus asuntos legales. AbogaMéxico nació para eliminar la distancia entre tú y el sistema legal mexicano.</p>
+        <p>Nuestros abogados trabajan exclusivamente en línea, con horarios flexibles pensados para la comunidad mexicana en EE.UU. — incluidos fines de semana y noches.</p>
+        <div class="experience-stats">
+          <div class="exp-stat rv">
+            <div class="exp-stat-n">+2,400</div>
+            <div class="exp-stat-l">Casos resueltos exitosamente</div>
+          </div>
+          <div class="exp-stat rv" style="transition-delay:.05s">
+            <div class="exp-stat-n">98%</div>
+            <div class="exp-stat-l">Clientes satisfechos</div>
+          </div>
+          <div class="exp-stat rv" style="transition-delay:.1s">
+            <div class="exp-stat-n">24h</div>
+            <div class="exp-stat-l">Respuesta promedio</div>
+          </div>
+          <div class="exp-stat rv" style="transition-delay:.15s">
+            <div class="exp-stat-n">$0</div>
+            <div class="exp-stat-l">Costo de registro</div>
+          </div>
+        </div>
+      </div>
+      <!-- Imagen videollamada libre de derechos -->
+      <div class="experience-box rv" style="transition-delay:.1s">
+        <!-- Imagen de videollamada generada con IA (Higgsfield GPT Image 2) -->
+        <img
+          class="experience-img"
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_3J1WIqLC1JL8GN9nx3Mi7vvxL9n/hf_20260908_233253_fb160eca-d93f-4b69-b83a-3aa16e18c358.png"
+          alt="Abogado mexicano en videollamada con cliente en EE.UU."
+        />
+        <div class="experience-overlay">
+          <div class="experience-card">
+            <h4>Consulta desde tu teléfono o computadora</h4>
+            <p>Sin viajar, sin filas, sin burocracia. Tu abogado certificado te atiende en video con la misma seriedad que en un despacho presencial.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ PANEL ABOGADOS ═══════════════ -->
+<section class="section sec-gray" id="panel-abogados">
+  <div class="container">
+    <div class="sec-head rv">
+      <h2>Panel de Abogados</h2>
+      <p>Gestiona tus casos, consultas y clientes desde un solo lugar.</p>
+    </div>
+    <div class="lawyer-panel-grid">
+      <!-- Card: Casos abiertos -->
+      <div class="lp-card rv">
+        <div class="lp-card-icon">📂</div>
+        <h3>Casos Abiertos</h3>
+        <p>Visualiza todos tus expedientes activos, documentos del cliente, historial de videollamadas y próximas citas agendadas.</p>
+        <ul class="lp-features">
+          <li>Expediente digital completo</li>
+          <li>Documentos compartidos</li>
+          <li>Historial de consultas</li>
+          <li>Próximas videollamadas</li>
+        </ul>
+      </div>
+      <!-- Card: Casos cerrados -->
+      <div class="lp-card rv" style="transition-delay:.1s">
+        <div class="lp-card-icon">✅</div>
+        <h3>Casos Cerrados</h3>
+        <p>Consulta el historial de casos resueltos con resultados, notas finales, documentos entregados y valoraciones del cliente.</p>
+        <ul class="lp-features">
+          <li>Resultado del caso</li>
+          <li>Documentos finales</li>
+          <li>Calificación del cliente</li>
+          <li>Honorarios cobrados</li>
+        </ul>
+      </div>
+      <!-- Card: Agenda -->
+      <div class="lp-card rv" style="transition-delay:.2s">
+        <div class="lp-card-icon">📆</div>
+        <h3>Agenda & Pagos</h3>
+        <p>Administra tu calendario de disponibilidad y recibe pagos directamente en tu cuenta bancaria a través de Stripe Connect.</p>
+        <ul class="lp-features">
+          <li>Calendario personalizado</li>
+          <li>Cobro automático vía Stripe</li>
+          <li>Recordatorios automáticos</li>
+          <li>Reportes de ingresos</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lp-cta rv">
+      <div class="lp-cta-box">
+        <h3>¿Eres abogado certificado?</h3>
+        <p>Únete a nuestra red, recibe clientes en línea y gestiona tu práctica legal de forma 100% remota.</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:24px">
+          <button class="btn btn-gold btn-lg" onclick="openModal('register-lawyer')">Registrarme como abogado</button>
+          <button class="btn btn-outline btn-lg" onclick="openModal('login-lawyer')">Iniciar sesión — Abogados</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section sec-blue" id="precios">
+  <div class="container">
+    <div class="sec-head light rv">
+      <h2>Precio único y transparente</h2>
+      <p>Sin costos ocultos. Sin sorpresas. Paga solo cuando necesites.</p>
+    </div>
+    <div class="price-wrap rv">
+      <div class="pcard">
+        <div class="pbadge">Consulta por videollamada</div>
+        <div class="pamt">$49.99 <small>USD / hora</small></div>
+        <div class="pmxn">≈ $850 MXN al tipo de cambio actual</div>
+        <ul class="pfeats">
+          <li>Videollamada HD segura y privada</li>
+          <li>Abogado certificado con cédula SEP verificada</li>
+          <li>Expediente digital del caso</li>
+          <li>Grabación de sesión disponible</li>
+          <li>Pago en USD o MXN — tarjeta o PayPal</li>
+          <li>Cancelación gratuita hasta 2 h antes</li>
+        </ul>
+        <button class="btn btn-gold btn-lg btn-full" onclick="openModal('register-client')">
+          Agenda tu consulta express
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="nav-logo">
+          <div class="logo-mark">
+            <svg viewBox="0 0 230 160" width="32" height="22">
+              <polygon points="0,155 31,155 73,0 42,0" fill="#000"/>
+              <polygon points="68,0 99,0 123,155 92,155" fill="#000"/>
+              <polygon points="105,155 136,155 169,0 138,0" fill="#000"/>
+              <polygon points="165,0 196,0 230,155 199,155" fill="#000"/>
+              <rect x="53" y="83" width="96" height="16" rx="3" fill="#B9CEED"/>
+            </svg>
+          </div>
+          <div class="nav-divider"></div>
+          <div class="logo-text">
+            <span class="logo-name">ABOGAMÉXICO</span>
+            <span class="logo-sub">Consultorio Jurídico Virtual</span>
+          </div>
+        </div>
+        <p>Conectamos a mexicanos en EE.UU. con abogados certificados en México para resolver asuntos legales sin necesidad de viajar.</p>
+      </div>
+      <div class="foot-col">
+        <h5>PLATAFORMA</h5>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#abogados">Buscar abogados</a>
+        <a href="#precios">Precios</a>
+        <a href="#" onclick="openModal('register-lawyer');return false">Soy abogado</a>
+      </div>
+      <div class="foot-col">
+        <h5>LEGAL</h5>
+        <a href="#">Términos de uso</a>
+        <a href="#">Aviso de privacidad</a>
+        <a href="#">Aviso legal</a>
+      </div>
+      <div class="foot-col">
+        <h5>CONTACTO</h5>
+        <a href="mailto:hola@abogamexico.com">hola@abogamexico.com</a>
+        <a href="#">WhatsApp</a>
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2025 AbogaMéxico. Todos los derechos reservados.</p>
+      <p>Los abogados en esta plataforma son profesionales independientes certificados.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════ OVERLAY / MODAL ═══════════════ -->
+<div class="overlay" id="overlay" onclick="closeModal()">
+  <div class="modal" id="modal" onclick="event.stopPropagation()">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <div class="m-body" id="mBody"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+/* ── DATOS ── */
+const ABOGADOS = [
+  {id:1,n:'Lic. Sofía Ramírez',  ini:'SR',e:'CDMX',     c:'Ciudad de México',esp:'Derecho Familiar',    r:4.9,rv:87, ced:'2934871'},
+  {id:2,n:'Lic. Carlos Mendoza', ini:'CM',e:'Jalisco',   c:'Guadalajara',     esp:'Derecho Migratorio', r:4.8,rv:112,ced:'3821045'},
+  {id:3,n:'Lic. Ana Torres',     ini:'AT',e:'Nuevo León',c:'Monterrey',       esp:'Derecho Civil',      r:4.7,rv:64, ced:'4129038'},
+  {id:4,n:'Lic. Jorge Vega',     ini:'JV',e:'Puebla',    c:'Puebla',          esp:'Derecho Inmobiliario',r:4.9,rv:93,ced:'1820394'},
+  {id:5,n:'Lic. María Castillo', ini:'MC',e:'Yucatán',   c:'Mérida',          esp:'Derecho Familiar',   r:5.0,rv:41, ced:'5920173'},
+  {id:6,n:'Lic. Roberto Soto',   ini:'RS',e:'CDMX',      c:'Ciudad de México',esp:'Derecho Penal',      r:4.6,rv:78, ced:'2039471'},
+  {id:7,n:'Lic. Lucía Herrera',  ini:'LH',e:'Guanajuato',c:'León',            esp:'Derecho Laboral',    r:4.8,rv:55, ced:'6103892'},
+  {id:8,n:'Lic. Miguel Flores',  ini:'MF',e:'Jalisco',   c:'Guadalajara',     esp:'Derecho Familiar',   r:4.7,rv:99, ced:'3740182'},
+  {id:9,n:'Lic. Patricia Ruiz',  ini:'PR',e:'Nuevo León',c:'Monterrey',       esp:'Derecho Migratorio', r:4.9,rv:130,ced:'4820194'},
+  {id:10,n:'Lic. Andrés Mora',   ini:'AM',e:'Veracruz',  c:'Veracruz',        esp:'Derecho Civil',      r:4.7,rv:62, ced:'7201483'},
+];
+
+/* ── NAVBAR SCROLL ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',scrollY>55);
+});
+
+/* ── MENÚ MÓVIL ── */
+function toggleMenu(){
+  const h=document.getElementById('ham'),m=document.getElementById('mmenu');
+  h.classList.toggle('open'); m.classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('mmenu').classList.remove('open');
+}
+
+/* ── SCROLL SUAVE ── */
+function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
+
+/* ── REVEAL ON SCROLL ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}});
+},{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* ── HERO CANVAS (animación de partículas / red) ── */
+(function(){
+  const cv=document.getElementById('heroCanvas');
+  const ctx=cv.getContext('2d');
+  let W,H,pts=[];
+  const N=55;
+  function resize(){
+    W=cv.width=cv.offsetWidth;
+    H=cv.height=cv.offsetHeight;
+  }
+  function initPts(){
+    pts=[];
+    for(let i=0;i<N;i++){
+      pts.push({
+        x:Math.random()*W,y:Math.random()*H,
+        vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+        r:Math.random()*1.5+.5
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<N;i++){
+      const a=pts[i];
+      a.x+=a.vx; a.y+=a.vy;
+      if(a.x<0||a.x>W) a.vx*=-1;
+      if(a.y<0||a.y>H) a.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(a.x,a.y,a.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(185,206,237,.55)';
+      ctx.fill();
+      for(let j=i+1;j<N;j++){
+        const b=pts[j];
+        const d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<120){
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=`rgba(185,206,237,${.18*(1-d/120)})`;
+          ctx.lineWidth=.6;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  resize(); initPts(); draw();
+  window.addEventListener('resize',()=>{resize();initPts()});
+})();
+
+/* ── TARJETAS ABOGADOS ── */
+function renderCards(list){
+  const g=document.getElementById('lGrid');
+  if(!list.length){
+    g.innerHTML='<p class="no-results">No se encontraron abogados con esos filtros. Prueba otra búsqueda.</p>';
+    return;
+  }
+  g.innerHTML=list.map(a=>`
+    <div class="lcard">
+      <div class="lcard-top">
+        <div class="lavatar">${a.ini}</div>
+        <div class="lcard-info">
+          <h4>${a.n}</h4>
+          <div class="cedula-tag">Cédula SEP: ${a.ced}</div>
+        </div>
+      </div>
+      <div class="ltags">
+        <span class="ltag">${a.esp}</span>
+        <span class="ltag">${a.e}</span>
+      </div>
+      <div class="lcard-meta">
+        <span class="lrating">★ ${a.r} <span style="opacity:.5">(${a.rv} reseñas)</span></span>
+        <span class="lloc">📍 ${a.c}</span>
+      </div>
+      <div class="lprice">$49.99 USD <span>/ 1 hora</span></div>
+      <button class="btn btn-gold" style="width:100%;font-size:.82rem"
+        onclick="abrirPago('${a.n}','${a.esp}')">
+        Agendar consulta express
+      </button>
+    </div>
+  `).join('');
+}
+function filtrar(){
+  const e=document.getElementById('fEstado').value;
+  const s=document.getElementById('fEsp').value;
+  renderCards(ABOGADOS.filter(a=>(!e||a.e===e)&&(!s||a.esp===s)));
+}
+function setFiltro(esp){
+  document.getElementById('fEsp').value=esp;
+  filtrar();
+  document.getElementById('abogados').scrollIntoView({behavior:'smooth'});
+}
+renderCards(ABOGADOS);
+
+/* ── MODAL ENGINE ── */
+function openModal(tipo){
+  document.getElementById('overlay').classList.add('open');
+  const b=document.getElementById('mBody');
+  const map={
+    'login':        tplLogin,
+    'register':     tplRegSelect,
+    'register-client': tplRegClient,
+    'register-lawyer': tplRegLawyer,
+  };
+  if(map[tipo]) b.innerHTML=map[tipo]();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('mBody').innerHTML='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+/* ── TEMPLATES ── */
+function tplLoginLawyer(){return`
+  <div class="m-head">
+    <div class="modal-lawyer-badge">⚖️ Portal Exclusivo de Abogados</div>
+    <h3>Acceso — Abogados</h3>
+    <p>Ingresa a tu panel de casos y consultas</p>
+  </div>
+  <div class="fg"><label>Correo profesional</label><input type="email" placeholder="lic@despacho.com"/></div>
+  <div class="fg"><label>Contraseña</label><input type="password" placeholder="••••••••"/></div>
+  <button class="btn btn-gold btn-full" onclick="simLogin()">Entrar al panel</button>
+  <p class="fnote">¿Nuevo en la plataforma? <a onclick="openModal('register-lawyer')">Solicitar ingreso</a></p>
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f0f0f0">
+    <p style="font-size:.78rem;color:#aaa;text-align:center;margin-bottom:14px">Una vez dentro tendrás acceso a:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:#f8faff;border-radius:8px;padding:10px;font-size:.75rem;color:#444;text-align:center">📂 Casos abiertos</div>
+      <div style="background:#f8faff;border-radius:8px;padding:10px;font-size:.75rem;color:#444;text-align:center">✅ Casos cerrados</div>
+      <div style="background:#f8faff;border-radius:8px;padding:10px;font-size:.75rem;color:#444;text-align:center">📆 Mi agenda</div>
+      <div style="background:#f8faff;border-radius:8px;padding:10px;font-size:.75rem;color:#444;text-align:center">💰 Mis pagos</div>
+    </div>
+  </div>
+`}
+
+function tplLogin(){return`
+  <div class="m-head"><h3>Iniciar sesión</h3><p>Accede a tu cuenta de AbogaMéxico</p></div>
+  <div class="m-tabs">
+    <button class="mtab on" onclick="switchTab(this,'tp-c')">Soy Cliente</button>
+    <button class="mtab"    onclick="switchTab(this,'tp-a')">Soy Abogado</button>
+  </div>
+  <div class="tab-pane on" id="tp-c">
+    <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="tucorreo@ejemplo.com"/></div>
+    <div class="fg"><label>Contraseña</label><input type="password" placeholder="••••••••"/></div>
+    <button class="btn btn-gold btn-full" onclick="simLogin()">Entrar</button>
+    <p class="fnote">¿No tienes cuenta? <a onclick="openModal('register')">Regístrate gratis</a></p>
+  </div>
+  <div class="tab-pane" id="tp-a">
+    <div class="fg"><label>Correo electrónico profesional</label><input type="email" placeholder="lic@despacho.com"/></div>
+    <div class="fg"><label>Contraseña</label><input type="password" placeholder="••••••••"/></div>
+    <button class="btn btn-gold btn-full" onclick="simLogin()">Entrar</button>
+    <p class="fnote">¿Aún no registrado? <a onclick="openModal('register-lawyer')">Únete como abogado</a></p>
+  </div>
+`}
+
+function tplRegSelect(){return`
+  <div class="m-head"><h3>Crear cuenta</h3><p>¿Cómo quieres registrarte?</p></div>
+  <div style="display:grid;gap:14px">
+    <div class="step" style="cursor:pointer;padding:22px" onclick="openModal('register-client')">
+      <div style="font-size:1.6rem;margin-bottom:8px">👤</div>
+      <h3 style="font-size:1rem;margin-bottom:4px">Soy Cliente</h3>
+      <p style="font-size:.82rem">Busco un abogado en México para mi asunto legal.</p>
+    </div>
+    <div class="step" style="cursor:pointer;padding:22px" onclick="openModal('register-lawyer')">
+      <div style="font-size:1.6rem;margin-bottom:8px">⚖️</div>
+      <h3 style="font-size:1rem;margin-bottom:4px">Soy Abogado</h3>
+      <p style="font-size:.82rem">Soy licenciado y quiero captar clientes en línea.</p>
+    </div>
+  </div>
+  <p class="fnote" style="margin-top:14px">¿Ya tienes cuenta? <a onclick="openModal('login')">Inicia sesión</a></p>
+`}
+
+function tplRegClient(){return`
+  <div class="m-head"><h3>Crear cuenta de Cliente</h3><p>Regístrate para agendar tu consulta</p></div>
+  <div class="frow">
+    <div class="fg"><label>Nombre</label><input type="text" placeholder="Juan"/></div>
+    <div class="fg"><label>Apellido</label><input type="text" placeholder="García"/></div>
+  </div>
+  <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="juan@ejemplo.com"/></div>
+  <div class="fg"><label>Teléfono (EE.UU. o MX)</label><input type="tel" placeholder="+1 312 555 0100"/></div>
+  <div class="frow">
+    <div class="fg">
+      <label>País de residencia</label>
+      <select><option>Estados Unidos</option><option>México</option><option>Otro</option></select>
+    </div>
+    <div class="fg"><label>Ciudad</label><input type="text" placeholder="Chicago, IL"/></div>
+  </div>
+  <div class="fg"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"/></div>
+  <button class="btn btn-gold btn-full" onclick="simRegClient()">Crear cuenta gratis</button>
+  <p class="fnote">Al registrarte aceptas los <a href="#">Términos de uso</a> y la <a href="#">Política de privacidad</a>.</p>
+`}
+
+function tplRegLawyer(){return`
+  <div class="m-head"><h3>Registro de Abogado</h3><p>Únete a la red de AbogaMéxico</p></div>
+  <div class="fsec">DATOS PERSONALES</div>
+  <div class="frow">
+    <div class="fg"><label>Nombre</label><input type="text" placeholder="María"/></div>
+    <div class="fg"><label>Apellido</label><input type="text" placeholder="López"/></div>
+  </div>
+  <div class="fg"><label>Correo profesional</label><input type="email" placeholder="lic.maria@despacho.com"/></div>
+  <div class="fg"><label>Teléfono</label><input type="tel" placeholder="+52 55 1234 5678"/></div>
+  <div class="fsec" style="margin-top:18px">DATOS PROFESIONALES</div>
+  <div class="fg">
+    <label>Cédula Profesional (SEP) *</label>
+    <input type="text" id="cedula" placeholder="Ej. 3821045" maxlength="8" oninput="valCedula(this)"/>
+    <div id="cedMsg"></div>
+  </div>
+  <div class="frow">
+    <div class="fg">
+      <label>Estado donde ejerce</label>
+      <select>
+        <option value="">Selecciona...</option>
+        <option>Ciudad de México</option><option>Jalisco</option>
+        <option>Nuevo León</option><option>Puebla</option>
+        <option>Yucatán</option><option>Guanajuato</option>
+        <option>Veracruz</option><option>Chihuahua</option>
+        <option>Coahuila</option><option>Oaxaca</option>
+      </select>
+    </div>
+    <div class="fg"><label>Ciudad</label><input type="text" placeholder="Guadalajara"/></div>
+  </div>
+  <div class="fg">
+    <label>Especialidad principal</label>
+    <select>
+      <option>Derecho Familiar</option><option>Derecho Migratorio</option>
+      <option>Derecho Civil</option><option>Derecho Inmobiliario</option>
+      <option>Derecho Penal</option><option>Derecho Laboral</option>
+    </select>
+  </div>
+  <div class="fg">
+    <label>Descripción profesional</label>
+    <textarea placeholder="Cuéntale a tus clientes sobre tu experiencia y enfoque..."></textarea>
+  </div>
+  <div class="fg"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"/></div>
+  <button class="btn btn-gold btn-full" onclick="simRegLawyer()">Solicitar ingreso a la red</button>
+  <p class="fnote">Tu cédula será verificada con la SEP antes de publicar tu perfil.</p>
+`}
+
+function tplPago(nombre, esp){
+  const hoy=new Date().toISOString().split('T')[0];
+  return`
+  <div class="m-head"><h3>Agendar consulta</h3><p>Con ${nombre} · ${esp}</p></div>
+  <div class="pay-summary">
+    <div class="pay-amt">$49.99 <span style="font-size:1rem;font-weight:400;color:#666">USD</span></div>
+    <div class="pay-desc">1 hora de consulta por videollamada · Pago único sin suscripción</div>
+  </div>
+  <div class="fsec">FECHA Y HORA</div>
+  <div class="frow">
+    <div class="fg"><label>Fecha</label><input type="date" id="fDate" min="${hoy}"/></div>
+    <div class="fg">
+      <label>Hora (Hora Central MX)</label>
+      <select id="fHour">
+        <option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
+        <option>12:00 PM</option><option>02:00 PM</option><option>03:00 PM</option>
+        <option>04:00 PM</option><option>05:00 PM</option>
+      </select>
+    </div>
+  </div>
+  <div class="fsec" style="margin-top:4px">MÉTODO DE PAGO</div>
+  <div class="pay-methods">
+    <div class="pmethod on" onclick="selPay(this)">💳 Tarjeta</div>
+    <div class="pmethod"   onclick="selPay(this)">🅿️ PayPal</div>
+  </div>
+  <div id="cardArea">
+    <div class="fg"><label>Número de tarjeta</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19" oninput="fmtCard(this)"/></div>
+    <div class="frow">
+      <div class="fg"><label>Vencimiento</label><input type="text" placeholder="MM / AA" maxlength="7"/></div>
+      <div class="fg"><label>CVV</label><input type="text" placeholder="123" maxlength="4"/></div>
+    </div>
+    <div class="fg"><label>Nombre en la tarjeta</label><input type="text" placeholder="JUAN GARCIA"/></div>
+  </div>
+  <button class="btn btn-gold btn-full" onclick="procesarPago('${nombre}')">
+    Pagar $49.99 USD y confirmar cita
+  </button>
+  <div class="stripe-note">🔒 Pago seguro procesado por <strong>Stripe</strong> · Cifrado TLS / PCI DSS</div>
+`}
+
+function tplConfirm(nombre, fecha, hora){
+  const rid='am-'+Math.random().toString(36).slice(2,10);
+  window._lastRoom=rid;
+  return`
+  <div class="confirm">
+    <div class="confirm-ico">✅</div>
+    <h3>¡Cita confirmada!</h3>
+    <p>Tu consulta con <strong>${nombre}</strong> está agendada para:</p>
+    <p><strong>${fecha||'Próxima disponibilidad'}</strong> a las <strong>${hora||'10:00 AM'}</strong> (Hora Central MX)</p>
+    <p style="margin-top:8px">Tu sala de videollamada:</p>
+    <div class="room-link">meet.jit.si/${rid}</div>
+    <div class="confirm-btns">
+      <button class="btn btn-gold" onclick="abrirVideo('${rid}')">Unirse ahora a la sala</button>
+      <button class="btn btn-outline" onclick="closeModal()">Cerrar</button>
+    </div>
+    <p style="font-size:.73rem;color:#bbb;margin-top:14px">El cargo aparecerá como ABOGAMEXICO en tu estado de cuenta.</p>
+  </div>
+`}
+
+function tplVideo(rid){return`
+  <div class="m-head"><h3>Sala de consulta</h3></div>
+  <div class="vroom">
+    <div class="vroom-head">
+      <h4>🔒 Sesión cifrada · AbogaMéxico</h4>
+      <span class="live">● EN VIVO</span>
+    </div>
+    <iframe
+      src="https://meet.jit.si/${rid}#config.startWithVideoMuted=false&config.startWithAudioMuted=false&interfaceConfig.SHOW_JITSI_WATERMARK=false&interfaceConfig.TOOLBAR_BUTTONS=['microphone','camera','hangup','chat','tileview']"
+      allow="camera;microphone;fullscreen;display-capture"
+      title="Videollamada AbogaMéxico"></iframe>
+    <div class="vroom-ctrl">
+      <button class="vbtn mic" title="Silenciar">🎤</button>
+      <button class="vbtn end" onclick="closeModal()" title="Finalizar">📵</button>
+      <button class="vbtn cam" title="Cámara">📷</button>
+    </div>
+  </div>
+  <p style="font-size:.76rem;color:#aaa;text-align:center;margin-top:10px">La sesión se registra en tu expediente digital.</p>
+`}
+
+/* ── FUNCIONES DE INTERACCIÓN ── */
+function switchTab(btn,id){
+  btn.closest('.m-body').querySelectorAll('.mtab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  btn.closest('.m-body').querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function valCedula(inp){
+  const v=inp.value.replace(/\D/g,''); inp.value=v;
+  const m=document.getElementById('cedMsg');
+  if(!m) return;
+  if(v.length>=6&&v.length<=8){m.className='fok';m.textContent='✓ Formato válido — se verificará con la SEP';}
+  else if(v.length>0){m.className='ferr';m.textContent='La cédula debe tener entre 6 y 8 dígitos.';}
+  else{m.textContent='';}
+}
+function fmtCard(inp){
+  let v=inp.value.replace(/\D/g,'').slice(0,16);
+  inp.value=v.match(/.{1,4}/g)?.join(' ')||v;
+}
+function selPay(el){
+  el.closest('.pay-methods').querySelectorAll('.pmethod').forEach(m=>m.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('cardArea').style.display=el.textContent.includes('Tarjeta')?'block':'none';
+}
+function abrirPago(nombre,esp){
+  openModal('_'); document.getElementById('mBody').innerHTML=tplPago(nombre,esp);
+}
+function procesarPago(nombre){
+  const fecha=document.getElementById('fDate')?.value||'';
+  const hora=document.getElementById('fHour')?.value||'';
+  const btn=document.querySelector('.btn.btn-gold.btn-full');
+  if(btn){btn.textContent='Procesando pago…';btn.disabled=true;btn.style.opacity='.7';}
+  setTimeout(()=>{document.getElementById('mBody').innerHTML=tplConfirm(nombre,fecha,hora);},2200);
+}
+function abrirVideo(rid){
+  document.getElementById('mBody').innerHTML=tplVideo(rid);
+}
+function simLogin(){
+  const btn=document.querySelector('.btn.btn-gold.btn-full');
+  if(btn){btn.textContent='Verificando…';btn.disabled=true;}
+  setTimeout(()=>{closeModal();alert('✓ Sesión iniciada.\n\n(Conecta tu backend para autenticación real con JWT / OAuth)');},1300);
+}
+function simRegClient(){
+  const btn=document.querySelector('.btn.btn-gold.btn-full');
+  if(btn){btn.textContent='Creando cuenta…';btn.disabled=true;}
+  setTimeout(()=>{document.getElementById('mBody').innerHTML=`
+    <div class="confirm">
+      <div class="confirm-ico">🎉</div>
+      <h3>¡Cuenta creada!</h3>
+      <p>Bienvenido a AbogaMéxico. Revisa tu correo para verificar tu cuenta y empieza a buscar tu abogado.</p>
+      <div class="confirm-btns" style="margin-top:20px">
+        <button class="btn btn-gold" onclick="closeModal()">Comenzar</button>
+      </div>
+    </div>`;},1600);
+}
+function simRegLawyer(){
+  const ced=document.getElementById('cedula')?.value||'';
+  if(!ced||ced.length<6){
+    const m=document.getElementById('cedMsg');
+    if(m){m.className='ferr';m.textContent='Por favor ingresa tu cédula profesional válida.';}
+    document.getElementById('cedula')?.focus(); return;
+  }
+  const btn=document.querySelector('.btn.btn-gold.btn-full');
+  if(btn){btn.textContent='Enviando solicitud…';btn.disabled=true;}
+  setTimeout(()=>{document.getElementById('mBody').innerHTML=`
+    <div class="confirm">
+      <div class="confirm-ico">⚖️</div>
+      <h3>Solicitud enviada</h3>
+      <p>Recibimos tu registro. Verificaremos la cédula <strong>${ced}</strong> con la SEP y te notificaremos en 24–48 horas para activar tu perfil.</p>
+      <div class="confirm-btns" style="margin-top:20px">
+        <button class="btn btn-gold" onclick="closeModal()">Entendido</button>
+      </div>
+    </div>`;},1900);
+}
+</script>
+
+
+</body>
+</html>
