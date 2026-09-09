@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mi Panel — AbogaMéxico</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --azul:#00183D;--celeste:#B9CEED;--dorado:#CAA181;
+  --blanco:#fff;--gris:#f5f7fa;--oscuro:#001128;
+  --sans:'Inter',system-ui,sans-serif;
+  --display:'Plus Jakarta Sans','Inter',system-ui,sans-serif;
+  --r:12px;
+  --sh:0 2px 12px rgba(0,24,61,.08);
+  --sh-lg:0 8px 32px rgba(0,24,61,.14);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--gris);color:#111;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ── NAVBAR ── */
+.nav{background:var(--azul);height:62px;display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.25)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark svg{display:block}
+.logo-text{display:flex;flex-direction:column;line-height:1.1}
+.logo-name{font-family:var(--display);font-size:.95rem;font-weight:700;color:#fff;letter-spacing:.06em}
+.logo-sub{font-size:.55rem;color:var(--celeste);letter-spacing:.08em}
+.nav-sep{width:1px;height:22px;background:rgba(185,206,237,.25)}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.nav-name{color:rgba(255,255,255,.75);font-size:.82rem}
+.nbtn{padding:7px 16px;border-radius:7px;font-size:.82rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:var(--sans)}
+.nbtn-gold{background:var(--dorado);color:#fff}.nbtn-gold:hover{background:#b88c6a}
+.nbtn-light{background:transparent;color:#fff;border:1.5px solid rgba(185,206,237,.35)}.nbtn-light:hover{background:rgba(185,206,237,.1)}
+.nbtn-lang{background:rgba(185,206,237,.1);color:#fff;border:1px solid rgba(185,206,237,.25)}.nbtn-lang:hover{background:rgba(185,206,237,.2)}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 62px);max-width:1280px;margin:0 auto;padding:24px;gap:20px}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:4px}
+.sb-section{font-size:.68rem;font-weight:700;letter-spacing:.1em;color:#aaa;padding:12px 12px 4px;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;cursor:pointer;transition:all .18s;color:#666;font-size:.88rem;font-weight:500;border:none;background:none;width:100%;text-align:left}
+.sb-item:hover{background:#ebebf0;color:var(--azul)}
+.sb-item.active{background:var(--azul);color:#fff}
+.sb-item.active .sb-badge{background:rgba(255,255,255,.25)}
+.sb-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.sb-badge{margin-left:auto;background:#e74c3c;color:#fff;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px;min-width:20px;text-align:center}
+
+/* ── MAIN ── */
+.main{display:flex;flex-direction:column;gap:18px;min-width:0}
+.page{display:none}.page.active{display:flex;flex-direction:column;gap:18px}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:var(--r);padding:22px 24px;box-shadow:var(--sh);border:1px solid #eaedf2}
+.card-title{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--azul);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{background:#fff;border-radius:var(--r);padding:18px;box-shadow:var(--sh);border:1px solid #eaedf2;border-left:4px solid var(--dorado)}
+.stat.blue{border-left-color:var(--celeste)}
+.stat.green{border-left-color:#27ae60}
+.stat.red{border-left-color:#e74c3c}
+.stat-n{font-family:var(--display);font-size:1.9rem;font-weight:800;color:var(--azul);line-height:1}
+.stat-l{font-size:.74rem;color:#999;margin-top:4px}
+
+/* ── WELCOME ── */
+.welcome{background:linear-gradient(135deg,var(--azul),var(--oscuro));border-radius:var(--r);padding:26px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.welcome-title{font-family:var(--display);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:4px}
+.welcome-sub{color:rgba(185,206,237,.75);font-size:.88rem}
+
+/* ── QUICK ACTIONS ── */
+.qa-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.qa{background:#fff;border-radius:var(--r);padding:16px;box-shadow:var(--sh);border:1px solid #eaedf2;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.qa:hover{box-shadow:var(--sh-lg);transform:translateY(-2px);border-color:var(--dorado)}
+.qa-icon{font-size:1.6rem;width:40px;height:40px;background:var(--gris);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qa-title{font-size:.85rem;font-weight:600;color:var(--azul)}
+.qa-sub{font-size:.72rem;color:#999;margin-top:2px}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;margin:-4px}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{background:#f8faff;padding:10px 14px;text-align:left;font-weight:600;color:#666;font-size:.75rem;letter-spacing:.04em;border-bottom:2px solid #eaedf2;white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid #f0f4f8;color:#333;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafbff}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:600}
+.b-open{background:#e8f5e9;color:#2e7d32}
+.b-closed{background:#f3f4f6;color:#666}
+.b-paid{background:#e8f5e9;color:#2e7d32}
+.b-pending{background:#fff8e1;color:#f57f17}
+.b-upcoming{background:#e3f2fd;color:#1565c0}
+.link{color:var(--dorado);font-weight:600;text-decoration:none;cursor:pointer}
+.link:hover{text-decoration:underline}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:48px 20px;color:#bbb}
+.empty-ico{font-size:2.8rem;margin-bottom:12px}
+.empty p{font-size:.9rem;margin-bottom:14px;color:#aaa}
+
+/* ── FORM ── */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-size:.78rem;font-weight:600;color:#555}
+.fg input,.fg select,.fg textarea{padding:10px 13px;border:1.5px solid #e0e4ea;border-radius:8px;font-family:var(--sans);font-size:.88rem;color:#111;outline:none;transition:border-color .2s;background:#fff}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--dorado);box-shadow:0 0 0 3px rgba(202,161,129,.1)}
+.fg textarea{resize:vertical;min-height:68px}
+
+/* ── PAY BOX ── */
+.pay-box{background:linear-gradient(135deg,#f8faff,#f0f4f8);border:1px solid #dde8f8;border-radius:12px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px}
+.pay-amount{font-family:var(--display);font-size:1.8rem;font-weight:800;color:var(--azul)}
+.pay-desc{font-size:.78rem;color:#888;margin-top:2px}
+
+/* ── CONFIRM ── */
+.confirm{text-align:center;padding:16px 0}
+.confirm-ico{font-size:3rem;margin-bottom:14px}
+.confirm h3{color:var(--azul);font-family:var(--display);font-size:1.4rem;margin-bottom:8px}
+.confirm p{font-size:.88rem;color:#666;margin-bottom:6px}
+.room-link{display:inline-block;background:#eef3ff;border:1px solid var(--celeste);color:var(--azul);font-size:.76rem;font-family:monospace;padding:8px 16px;border-radius:8px;margin:10px 0;word-break:break-all}
+.confirm-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+
+/* ── PROFILE ── */
+.avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--azul),var(--celeste));display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:16px;border:3px solid rgba(0,24,61,.1)}
+
+/* ── LOADER ── */
+.loader{display:flex;align-items:center;justify-content:center;padding:40px;color:#aaa;gap:10px;font-size:.88rem}
+.spin{width:18px;height:18px;border:2px solid #e0e0e0;border-top-color:var(--dorado);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── BTN ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:8px;font-family:var(--sans);font-size:.88rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;text-decoration:none}
+.btn-gold{background:var(--dorado);color:#fff}.btn-gold:hover{background:#b88c6a;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--azul);border:1.5px solid rgba(0,24,61,.2)}.btn-outline:hover{border-color:var(--azul);background:rgba(0,24,61,.03)}
+.btn-sm{padding:7px 16px;font-size:.8rem}
+.btn-danger{background:#e74c3c;color:#fff}.btn-danger:hover{background:#c0392b}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;padding:12px}
+  .sidebar{flex-direction:row;overflow-x:auto;gap:4px;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+  .sb-section{display:none}
+  .sb-item{white-space:nowrap;padding:8px 12px;border-radius:8px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr}
+}
+@media(max-width:540px){
+  .nav{padding:0 14px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .welcome{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 230 160" width="30" height="21">
+        <polygon points="0,155 31,155 73,0 42,0" fill="#000"/>
+        <polygon points="68,0 99,0 123,155 92,155" fill="#000"/>
+        <polygon points="105,155 136,155 169,0 138,0" fill="#000"/>
+        <polygon points="165,0 196,0 230,155 199,155" fill="#000"/>
+        <rect x="53" y="83" width="96" height="16" rx="3" fill="#B9CEED"/>
+      </svg>
+    </div>
+    <div class="nav-sep"></div>
+    <div class="logo-text">
+      <span class="logo-name">ABOGAMÉXICO</span>
+      <span class="logo-sub">Mi Panel</span>
+    </div>
+  </a>
+  <div class="nav-right">
+    <button class="nbtn nbtn-lang" id="langBtn" onclick="toggleLang()">🌐 EN</button>
+    <span class="nav-name" id="navName">...</span>
+    <a href="/" class="nbtn nbtn-light">← Inicio</a>
+    <button class="nbtn nbtn-light" onclick="signOut()">Salir</button>
+  </div>
+</nav>
+
+<!-- DASHBOARD -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-section" id="sb-s1">Mi cuenta</div>
+    <button class="sb-item active" onclick="showPage('home',this)">
+      <span class="sb-icon">🏠</span><span id="sb-home">Inicio</span>
+    </button>
+    <button class="sb-item" onclick="showPage('agendar',this)">
+      <span class="sb-icon">📅</span><span id="sb-agendar">Agendar consulta</span>
+    </button>
+    <div class="sb-section" id="sb-s2">Mis casos</div>
+    <button class="sb-item" onclick="showPage('activos',this)">
+      <span class="sb-icon">📂</span>
+      <span id="sb-activos">Casos activos</span>
+      <span class="sb-badge" id="badgeActivos" style="display:none">0</span>
+    </button>
+    <button class="sb-item" onclick="showPage('cerrados',this)">
+      <span class="sb-icon">✅</span><span id="sb-cerrados">Casos cerrados</span>
+    </button>
+    <div class="sb-section" id="sb-s3">Historial</div>
+    <button class="sb-item" onclick="showPage('citas',this)">
+      <span class="sb-icon">📹</span><span id="sb-citas">Mis citas</span>
+    </button>
+    <button class="sb-item" onclick="showPage('pagos',this)">
+      <span class="sb-icon">💳</span><span id="sb-pagos">Mis pagos</span>
+    </button>
+    <div class="sb-section" id="sb-s4">Cuenta</div>
+    <button class="sb-item" onclick="showPage('perfil',this)">
+      <span class="sb-icon">👤</span><span id="sb-perfil">Mi perfil</span>
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="welcome">
+        <div>
+          <div class="welcome-title" id="wTitle">Bienvenido 👋</div>
+          <div class="welcome-sub" id="wSub">Gestiona tus consultas y casos legales desde aquí.</div>
+        </div>
+        <button class="btn btn-gold" onclick="showPage('agendar',null)" id="wBtn">+ Nueva consulta</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat blue"><div class="stat-n" id="sActivos">—</div><div class="stat-l" id="lActivos">Casos activos</div></div>
+        <div class="stat green"><div class="stat-n" id="sCerrados">—</div><div class="stat-l" id="lCerrados">Casos cerrados</div></div>
+        <div class="stat"><div class="stat-n" id="sCitas">—</div><div class="stat-l" id="lCitas">Consultas</div></div>
+        <div class="stat red"><div class="stat-n" id="sPagos">—</div><div class="stat-l" id="lPagos">Total pagado</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="qaTitle">⚡ Acciones rápidas</div>
+        <div class="qa-grid">
+          <div class="qa" onclick="showPage('agendar',null)">
+            <div class="qa-icon">📅</div>
+            <div><div class="qa-title" id="qa1t">Agendar consulta</div><div class="qa-sub" id="qa1s">Videollamada $49.99 USD</div></div>
+          </div>
+          <div class="qa" onclick="showPage('activos',null)">
+            <div class="qa-icon">📂</div>
+            <div><div class="qa-title" id="qa2t">Casos activos</div><div class="qa-sub" id="qa2s">Ver expedientes abiertos</div></div>
+          </div>
+          <div class="qa" onclick="showPage('citas',null)">
+            <div class="qa-icon">📹</div>
+            <div><div class="qa-title" id="qa3t">Mis citas</div><div class="qa-sub" id="qa3s">Acceder a videollamadas</div></div>
+          </div>
+          <div class="qa" onclick="showPage('pagos',null)">
+            <div class="qa-icon">💳</div>
+            <div><div class="qa-title" id="qa4t">Mis pagos</div><div class="qa-sub" id="qa4s">Historial de transacciones</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Próximas citas preview -->
+      <div class="card">
+        <div class="card-title">📅 <span id="proxTitle">Próximas citas</span></div>
+        <div id="proxContent"><div class="loader"><div class="spin"></div></div></div>
+      </div>
+    </div>
+
+    <!-- AGENDAR -->
+    <div class="page" id="page-agendar">
+      <div class="card" id="agendarCard">
+        <div class="card-title" id="agTitle">📅 Agendar consulta express</div>
+        <p style="color:#777;font-size:.88rem;margin-bottom:20px" id="agDesc">Selecciona la especialidad, fecha y hora. Un abogado certificado te atenderá por videollamada.</p>
+        <div class="fgrid">
+          <div class="fg">
+            <label id="agLblEsp">Especialidad legal</label>
+            <select id="ag_esp">
+              <option>Derecho Civil</option><option>Derecho Migratorio</option>
+              <option>Derecho Familiar</option><option>Derecho Penal</option>
+              <option>Derecho Inmobiliario</option><option>Derecho Mercantil</option>
+              <option>Derecho Fiscal</option><option>Seguridad Social</option>
+              <option>Derecho Administrativo</option><option>Derecho Agrario</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label id="agLblFecha">Fecha</label>
+            <input type="date" id="ag_fecha"/>
+          </div>
+          <div class="fg">
+            <label id="agLblHora">Hora (Hora Central México)</label>
+            <select id="ag_hora">
+              <option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
+              <option>12:00 PM</option><option>02:00 PM</option><option>03:00 PM</option>
+              <option>04:00 PM</option><option>05:00 PM</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label id="agLblDesc">Describe tu asunto brevemente</label>
+            <input type="text" id="ag_desc" placeholder="Ej. Divorcio, herencia, visa..."/>
+          </div>
+        </div>
+        <div class="pay-box">
+          <div>
+            <div class="pay-amount">$49.99 <span style="font-size:1rem;font-weight:400;color:#888">USD</span></div>
+            <div class="pay-desc" id="agLblPago">Videollamada de 1 hora · Pago único</div>
+          </div>
+          <button class="btn btn-gold" id="btnAgendar" onclick="confirmarAgenda()" style="padding:12px 28px">
+            Pagar y confirmar
+          </button>
+        </div>
+        <p style="font-size:.72rem;color:#ccc;text-align:center;margin-top:10px">🔒 Pago seguro via Stripe · PCI DSS Compliant</p>
+      </div>
+    </div>
+
+    <!-- CASOS ACTIVOS -->
+    <div class="page" id="page-activos">
+      <div class="card">
+        <div class="card-title" id="activosTitle">📂 Casos activos</div>
+        <div id="activosContent"><div class="loader"><div class="spin"></div><span>Cargando...</span></div></div>
+      </div>
+    </div>
+
+    <!-- CASOS CERRADOS -->
+    <div class="page" id="page-cerrados">
+      <div class="card">
+        <div class="card-title" id="cerradosTitle">✅ Casos cerrados</div>
+        <div id="cerradosContent"><div class="loader"><div class="spin"></div><span>Cargando...</span></div></div>
+      </div>
+    </div>
+
+    <!-- MIS CITAS -->
+    <div class="page" id="page-citas">
+      <div class="card">
+        <div class="card-title" id="citasTitle">📹 Mis citas</div>
+        <div id="citasContent"><div class="loader"><div class="spin"></div><span>Cargando...</span></div></div>
+      </div>
+    </div>
+
+    <!-- MIS PAGOS -->
+    <div class="page" id="page-pagos">
+      <div class="card">
+        <div class="card-title" id="pagosTitle">💳 Mis pagos</div>
+        <div id="pagosContent"><div class="loader"><div class="spin"></div><span>Cargando...</span></div></div>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div class="page" id="page-perfil">
+      <div class="card">
+        <div class="card-title" id="perfilTitle">👤 Mi perfil</div>
+        <div id="perfilContent"><div class="loader"><div class="spin"></div><span>Cargando...</span></div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ══════════════════════════════
+   ABOGAMÉXICO DASHBOARD v2
+══════════════════════════════ */
+
+var SUPA_URL = 'https://rqppqpkwzatrnaymsymc.supabase.co';
+var SUPA_KEY = 'sb_publishable_WOdewnKgzC7S6Swd8p7Ttw_NOh9_nEr';
+var _sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+var _user = null;
+var _profile = null;
+var _lang = 'es';
+var _loaded = {};
+
+/* ── SET MIN DATE ── */
+var hoy = new Date().toISOString().split('T')[0];
+document.getElementById('ag_fecha').min = hoy;
+document.getElementById('ag_fecha').value = hoy;
+
+/* ── AUTH CHECK ── */
+async function init() {
+  var res = await _sb.auth.getSession();
+  if (!res.data.session) { window.location.href = '/'; return; }
+  _user = res.data.session.user;
+  var meta = _user.user_metadata || {};
+  var nombre = meta.nombre || _user.email.split('@')[0];
+  document.getElementById('navName').textContent = nombre;
+  document.getElementById('wTitle').textContent = 'Bienvenido, ' + nombre + ' 👋';
+  loadAll();
+}
+
+/* ── LOAD ALL DATA ── */
+async function loadAll() {
+  await Promise.all([loadStats(), loadCitas(), loadPagos(), loadCasos(), loadPerfil()]);
+}
+
+/* ── NAV ── */
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.sb-item').forEach(function(b) { b.classList.remove('active'); });
+  var page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  if (btn) btn.classList.add('active');
+  // Find the right sidebar button if called from QA cards
+  if (!btn) {
+    document.querySelectorAll('.sb-item').forEach(function(b) {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) {
+        b.classList.add('active');
+      }
+    });
+  }
+}
+
+/* ── LOAD STATS ── */
+async function loadStats() {
+  var casos = await _sb.from('casos').select('estado').eq('cliente_id', _user.id);
+  var consultas = await _sb.from('consultas').select('monto,pagado,fecha,hora,especialidad,jitsi_room').order('fecha', { ascending: true });
+
+  var activos = 0, cerrados = 0;
+  if (casos.data) {
+    activos = casos.data.filter(function(c) { return c.estado === 'abierto'; }).length;
+    cerrados = casos.data.filter(function(c) { return c.estado !== 'abierto'; }).length;
+  }
+
+  var totalPagado = 0, totalConsultas = 0;
+  if (consultas.data) {
+    totalConsultas = consultas.data.length;
+    consultas.data.forEach(function(c) { if (c.pagado) totalPagado += (c.monto || 0); });
+  }
+
+  document.getElementById('sActivos').textContent = activos;
+  document.getElementById('sCerrados').textContent = cerrados;
+  document.getElementById('sCitas').textContent = totalConsultas;
+  document.getElementById('sPagos').textContent = '$' + totalPagado.toFixed(2);
+
+  var badge = document.getElementById('badgeActivos');
+  if (activos > 0) { badge.textContent = activos; badge.style.display = 'inline-block'; }
+  else badge.style.display = 'none';
+
+  // Próximas citas preview
+  var proximas = (consultas.data || []).filter(function(c) {
+    return c.fecha && c.fecha >= hoy;
+  }).slice(0, 3);
+
+  var prox = document.getElementById('proxContent');
+  if (proximas.length === 0) {
+    prox.innerHTML = '<div class="empty"><div class="empty-ico">📅</div><p>' +
+      (_lang === 'es' ? 'No tienes citas próximas.' : 'No upcoming appointments.') + '</p>' +
+      '<button class="btn btn-gold btn-sm" onclick="showPage(\'agendar\',null)">' +
+      (_lang === 'es' ? 'Agendar consulta' : 'Book consultation') + '</button></div>';
+  } else {
+    prox.innerHTML = '<div class="tbl-wrap"><table>' +
+      '<thead><tr><th>' + (_lang==='es'?'Fecha':'Date') + '</th><th>' + (_lang==='es'?'Hora':'Time') + '</th><th>' + (_lang==='es'?'Especialidad':'Specialty') + '</th><th>Sala</th></tr></thead>' +
+      '<tbody>' + proximas.map(function(c) {
+        return '<tr><td>' + (c.fecha||'—') + '</td><td>' + (c.hora||'—') + '</td>' +
+          '<td>' + (c.especialidad||'—') + '</td>' +
+          '<td>' + (c.jitsi_room ? '<a class="link" href="https://meet.jit.si/' + c.jitsi_room + '" target="_blank">📹 Unirse</a>' : '—') + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+}
+
+/* ── LOAD CASOS ── */
+async function loadCasos() {
+  var res = await _sb.from('casos').select('*').eq('cliente_id', _user.id).order('created_at', { ascending: false });
+  var data = res.data || [];
+  var activos = data.filter(function(c) { return c.estado === 'abierto'; });
+  var cerrados = data.filter(function(c) { return c.estado !== 'abierto'; });
+
+  function renderTable(items, showResult) {
+    if (!items.length) return '<div class="empty"><div class="empty-ico">📁</div>' +
+      '<p>' + (_lang==='es'?'No hay casos en esta categoría.':'No cases in this category.') + '</p>' +
+      '<button class="btn btn-gold btn-sm" onclick="showPage(\'agendar\',null)">' +
+      (_lang==='es'?'Agendar consulta':'Book consultation') + '</button></div>';
+    return '<div class="tbl-wrap"><table>' +
+      '<thead><tr><th>#</th><th>' + (_lang==='es'?'Especialidad':'Specialty') + '</th><th>' +
+      (_lang==='es'?'Descripción':'Description') + '</th>' +
+      (showResult ? '<th>' + (_lang==='es'?'Resultado':'Result') + '</th>' : '') +
+      '<th>' + (_lang==='es'?'Estado':'Status') + '</th><th>' + (_lang==='es'?'Fecha':'Date') + '</th></tr></thead>' +
+      '<tbody>' + items.map(function(c, i) {
+        return '<tr><td style="color:#bbb;font-size:.75rem">' + (i+1) + '</td>' +
+          '<td><strong>' + (c.especialidad||'—') + '</strong></td>' +
+          '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (c.descripcion||'—') + '</td>' +
+          (showResult ? '<td>' + (c.resultado||'—') + '</td>' : '') +
+          '<td><span class="badge ' + (c.estado==='abierto'?'b-open':'b-closed') + '">' + (c.estado||'—') + '</span></td>' +
+          '<td style="color:#aaa;font-size:.78rem">' + (c.created_at ? new Date(c.created_at).toLocaleDateString('es-MX') : '') + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+
+  document.getElementById('activosContent').innerHTML = renderTable(activos, false);
+  document.getElementById('cerradosContent').innerHTML = renderTable(cerrados, true);
+}
+
+/* ── LOAD CITAS ── */
+async function loadCitas() {
+  var res = await _sb.from('consultas').select('*').order('fecha', { ascending: false });
+  var data = res.data || [];
+
+  if (!data.length) {
+    document.getElementById('citasContent').innerHTML =
+      '<div class="empty"><div class="empty-ico">📅</div>' +
+      '<p>' + (_lang==='es'?'No tienes citas registradas.':'No appointments registered.') + '</p>' +
+      '<button class="btn btn-gold btn-sm" onclick="showPage(\'agendar\',null)">' +
+      (_lang==='es'?'Agendar consulta':'Book consultation') + '</button></div>';
+    return;
+  }
+
+  document.getElementById('citasContent').innerHTML =
+    '<div class="tbl-wrap"><table>' +
+    '<thead><tr><th>' + (_lang==='es'?'Fecha':'Date') + '</th><th>' + (_lang==='es'?'Hora':'Time') + '</th>' +
+    '<th>' + (_lang==='es'?'Especialidad':'Specialty') + '</th><th>' + (_lang==='es'?'Sala':'Room') + '</th>' +
+    '<th>' + (_lang==='es'?'Estado':'Status') + '</th></tr></thead>' +
+    '<tbody>' + data.map(function(c) {
+      var esProxima = c.fecha && c.fecha >= hoy;
+      return '<tr>' +
+        '<td>' + (c.fecha||'—') + '</td>' +
+        '<td>' + (c.hora||'—') + '</td>' +
+        '<td>' + (c.especialidad||'—') + '</td>' +
+        '<td>' + (c.jitsi_room
+          ? '<a class="link" href="https://meet.jit.si/' + c.jitsi_room + '" target="_blank">📹 Unirse</a>'
+          : '—') + '</td>' +
+        '<td><span class="badge ' + (esProxima ? 'b-upcoming' : c.pagado ? 'b-paid' : 'b-pending') + '">' +
+        (esProxima ? (_lang==='es'?'Próxima':'Upcoming') : c.pagado ? (_lang==='es'?'Completada':'Completed') : (_lang==='es'?'Pendiente':'Pending')) +
+        '</span></td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+
+/* ── LOAD PAGOS ── */
+async function loadPagos() {
+  var res = await _sb.from('consultas').select('*').order('created_at', { ascending: false });
+  var data = res.data || [];
+
+  if (!data.length) {
+    document.getElementById('pagosContent').innerHTML =
+      '<div class="empty"><div class="empty-ico">💳</div>' +
+      '<p>' + (_lang==='es'?'No hay pagos registrados.':'No payments registered.') + '</p></div>';
+    return;
+  }
+
+  var total = data.filter(function(c){return c.pagado;}).reduce(function(a,c){return a+(c.monto||0);},0);
+
+  document.getElementById('pagosContent').innerHTML =
+    '<div style="background:#f8faff;border-radius:10px;padding:14px 18px;margin-bottom:16px;border:1px solid #dde8f8">' +
+    '<span style="font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--azul)">$' + total.toFixed(2) + ' USD</span>' +
+    '<span style="color:#888;font-size:.8rem;margin-left:8px">' + (_lang==='es'?'Total pagado':'Total paid') + '</span></div>' +
+    '<div class="tbl-wrap"><table>' +
+    '<thead><tr><th>' + (_lang==='es'?'Fecha':'Date') + '</th><th>' + (_lang==='es'?'Concepto':'Concept') + '</th>' +
+    '<th>' + (_lang==='es'?'Monto':'Amount') + '</th><th>' + (_lang==='es'?'Estado':'Status') + '</th>' +
+    '<th>Stripe ID</th></tr></thead>' +
+    '<tbody>' + data.map(function(c) {
+      return '<tr>' +
+        '<td style="color:#888;font-size:.8rem">' + (c.created_at ? new Date(c.created_at).toLocaleDateString('es-MX') : '—') + '</td>' +
+        '<td>' + (_lang==='es'?'Consulta':'Consultation') + ' ' + (c.especialidad||'legal') + '</td>' +
+        '<td><strong>$' + ((c.monto||49.99).toFixed(2)) + ' USD</strong></td>' +
+        '<td><span class="badge ' + (c.pagado?'b-paid':'b-pending') + '">' + (c.pagado ? (_lang==='es'?'Pagado':'Paid') : (_lang==='es'?'Pendiente':'Pending')) + '</span></td>' +
+        '<td style="color:#ccc;font-size:.72rem;font-family:monospace">' + (c.stripe_payment_id||'—') + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+
+/* ── LOAD PERFIL ── */
+async function loadPerfil() {
+  var res = await _sb.from('usuarios').select('*').eq('id', _user.id).single();
+  _profile = res.data || {};
+  var ini = ((_profile.nombre||'?')[0] + ((_profile.apellido||'')[0]||'')).toUpperCase();
+
+  document.getElementById('perfilContent').innerHTML =
+    '<div class="avatar">' + (ini||'?') + '</div>' +
+    '<div class="fgrid">' +
+    '<div class="fg"><label>' + (_lang==='es'?'Nombre':'First name') + '</label><input id="p_nombre" value="' + (_profile.nombre||'') + '"/></div>' +
+    '<div class="fg"><label>' + (_lang==='es'?'Apellido':'Last name') + '</label><input id="p_apellido" value="' + (_profile.apellido||'') + '"/></div>' +
+    '<div class="fg"><label>' + (_lang==='es'?'Correo electrónico':'Email') + '</label><input value="' + _user.email + '" disabled style="opacity:.6"/></div>' +
+    '<div class="fg"><label>' + (_lang==='es'?'Teléfono':'Phone') + '</label><input id="p_tel" value="' + (_profile.telefono||'') + '"/></div>' +
+    '<div class="fg"><label>' + (_lang==='es'?'País':'Country') + '</label><input id="p_pais" value="' + (_profile.pais||'') + '"/></div>' +
+    '<div class="fg"><label>' + (_lang==='es'?'Ciudad':'City') + '</label><input id="p_ciudad" value="' + (_profile.ciudad||'') + '"/></div>' +
+    '</div>' +
+    '<button class="btn btn-gold" style="margin-top:18px" onclick="savePerfil()">' +
+    (_lang==='es'?'Guardar cambios':'Save changes') + '</button>';
+}
+
+async function savePerfil() {
+  var updates = {
+    nombre: document.getElementById('p_nombre').value,
+    apellido: document.getElementById('p_apellido').value,
+    telefono: document.getElementById('p_tel').value,
+    pais: document.getElementById('p_pais').value,
+    ciudad: document.getElementById('p_ciudad').value
+  };
+  var res = await _sb.from('usuarios').update(updates).eq('id', _user.id);
+  if (res.error) alert('Error: ' + res.error.message);
+  else alert(_lang==='es' ? '✓ Perfil actualizado correctamente' : '✓ Profile updated successfully');
+}
+
+/* ── AGENDAR ── */
+async function confirmarAgenda() {
+  var esp = document.getElementById('ag_esp').value;
+  var fecha = document.getElementById('ag_fecha').value;
+  var hora = document.getElementById('ag_hora').value;
+  var desc = document.getElementById('ag_desc').value;
+
+  if (!fecha) { alert(_lang==='es'?'Por favor selecciona una fecha.':'Please select a date.'); return; }
+
+  var btn = document.getElementById('btnAgendar');
+  btn.textContent = _lang==='es' ? 'Procesando...' : 'Processing...';
+  btn.disabled = true;
+
+  var rid = 'am-' + Math.random().toString(36).slice(2,10);
+
+  // Insert consulta
+  var r1 = await _sb.from('consultas').insert({
+    fecha: fecha, hora: hora, especialidad: esp,
+    monto: 49.99, pagado: false, jitsi_room: rid
+  });
+
+  // Insert caso
+  await _sb.from('casos').insert({
+    cliente_id: _user.id,
+    especialidad: esp,
+    descripcion: desc || esp,
+    estado: 'abierto'
+  });
+
+  btn.textContent = _lang==='es' ? 'Pagar y confirmar' : 'Pay and confirm';
+  btn.disabled = false;
+
+  if (r1.error) { alert('Error: ' + r1.error.message); return; }
+
+  // Show confirmation
+  document.getElementById('agendarCard').innerHTML =
+    '<div class="confirm">' +
+    '<div class="confirm-ico">✅</div>' +
+    '<h3>' + (_lang==='es'?'¡Consulta agendada!':'Consultation booked!') + '</h3>' +
+    '<p>' + (_lang==='es'?'Tu cita de':'Your') + ' <strong>' + esp + '</strong> ' +
+    (_lang==='es'?'está confirmada para el':'appointment is confirmed for') +
+    ' <strong>' + fecha + '</strong> ' + (_lang==='es'?'a las':'at') + ' <strong>' + hora + '</strong>.</p>' +
+    '<p style="margin-top:8px">' + (_lang==='es'?'Tu sala de videollamada:':'Your video call room:') + '</p>' +
+    '<div class="room-link">meet.jit.si/' + rid + '</div>' +
+    '<div class="confirm-btns">' +
+    '<a class="btn btn-gold" href="https://meet.jit.si/' + rid + '" target="_blank">📹 ' +
+    (_lang==='es'?'Unirse a la sala':'Join the room') + '</a>' +
+    '<button class="btn btn-outline" onclick="resetAgendar()">' +
+    (_lang==='es'?'Nueva consulta':'New consultation') + '</button>' +
+    '<button class="btn btn-outline" onclick="showPage(\'home\',null)">' +
+    (_lang==='es'?'Ir al inicio':'Go home') + '</button>' +
+    '</div></div>';
+
+  // Refresh data
+  loadStats(); loadCitas(); loadPagos(); loadCasos();
+}
+
+function resetAgendar() {
+  var card = document.getElementById('agendarCard');
+  // Reload page to reset form
+  location.reload();
+}
+
+/* ── SIGN OUT ── */
+async function signOut() {
+  await _sb.auth.signOut();
+  window.location.href = '/';
+}
+
+/* ── IDIOMA ── */
+var _texts = {
+  es: {
+    s1:'Mi cuenta', s2:'Mis casos', s3:'Historial', s4:'Cuenta',
+    sbHome:'Inicio', sbAgendar:'Agendar consulta', sbActivos:'Casos activos',
+    sbCerrados:'Casos cerrados', sbCitas:'Mis citas', sbPagos:'Mis pagos', sbPerfil:'Mi perfil',
+    wSub:'Gestiona tus consultas y casos legales desde aquí.',
+    wBtn:'+ Nueva consulta',
+    lActivos:'Casos activos', lCerrados:'Casos cerrados', lCitas:'Consultas', lPagos:'Total pagado',
+    qaTitle:'⚡ Acciones rápidas',
+    qa1t:'Agendar consulta', qa1s:'Videollamada $49.99 USD',
+    qa2t:'Casos activos', qa2s:'Ver expedientes abiertos',
+    qa3t:'Mis citas', qa3s:'Acceder a videollamadas',
+    qa4t:'Mis pagos', qa4s:'Historial de transacciones',
+    proxTitle:'Próximas citas',
+    agTitle:'📅 Agendar consulta express',
+    agDesc:'Selecciona la especialidad, fecha y hora. Un abogado certificado te atenderá por videollamada.',
+    agLblEsp:'Especialidad legal', agLblFecha:'Fecha',
+    agLblHora:'Hora (Hora Central México)', agLblDesc:'Describe tu asunto brevemente',
+    agLblPago:'Videollamada de 1 hora · Pago único',
+    btnAgendar:'Pagar y confirmar',
+    activosTitle:'📂 Casos activos', cerradosTitle:'✅ Casos cerrados',
+    citasTitle:'📹 Mis citas', pagosTitle:'💳 Mis pagos', perfilTitle:'👤 Mi perfil',
+    langBtn:'🌐 EN',
+  },
+  en: {
+    s1:'My account', s2:'My cases', s3:'History', s4:'Account',
+    sbHome:'Home', sbAgendar:'Book consultation', sbActivos:'Active cases',
+    sbCerrados:'Closed cases', sbCitas:'My appointments', sbPagos:'My payments', sbPerfil:'My profile',
+    wSub:'Manage your consultations and legal cases from here.',
+    wBtn:'+ New consultation',
+    lActivos:'Active cases', lCerrados:'Closed cases', lCitas:'Consultations', lPagos:'Total paid',
+    qaTitle:'⚡ Quick actions',
+    qa1t:'Book consultation', qa1s:'Video call $49.99 USD',
+    qa2t:'Active cases', qa2s:'View open files',
+    qa3t:'My appointments', qa3s:'Access video calls',
+    qa4t:'My payments', qa4s:'Transaction history',
+    proxTitle:'Upcoming appointments',
+    agTitle:'📅 Book express consultation',
+    agDesc:'Select specialty, date and time. A certified lawyer will attend you by video call.',
+    agLblEsp:'Legal specialty', agLblFecha:'Date',
+    agLblHora:'Time (Central Mexico Time)', agLblDesc:'Briefly describe your matter',
+    agLblPago:'1 hour video call · One-time payment',
+    btnAgendar:'Pay and confirm',
+    activosTitle:'📂 Active cases', cerradosTitle:'✅ Closed cases',
+    citasTitle:'📹 My appointments', pagosTitle:'💳 My payments', perfilTitle:'👤 My profile',
+    langBtn:'🌐 ES',
+  }
+};
+
+function toggleLang() {
+  _lang = _lang === 'es' ? 'en' : 'es';
+  var t = _texts[_lang];
+  document.documentElement.lang = _lang;
+  document.getElementById('langBtn').textContent = t.langBtn;
+  // Sidebar sections
+  var ids = ['sb-s1','sb-s2','sb-s3','sb-s4','sb-home','sb-agendar','sb-activos',
+             'sb-cerrados','sb-citas','sb-pagos','sb-perfil','wSub','wBtn',
+             'lActivos','lCerrados','lCitas','lPagos','qaTitle',
+             'qa1t','qa1s','qa2t','qa2s','qa3t','qa3s','qa4t','qa4s',
+             'proxTitle','agTitle','agDesc','agLblEsp','agLblFecha','agLblHora',
+             'agLblDesc','agLblPago','btnAgendar',
+             'activosTitle','cerradosTitle','citasTitle','pagosTitle','perfilTitle'];
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    var key = id.replace('sb-s','s').replace('sb-','sb');
+    // map element id to text key
+    var keyMap = {
+      'sb-s1':'s1','sb-s2':'s2','sb-s3':'s3','sb-s4':'s4',
+      'sb-home':'sbHome','sb-agendar':'sbAgendar','sb-activos':'sbActivos',
+      'sb-cerrados':'sbCerrados','sb-citas':'sbCitas','sb-pagos':'sbPagos','sb-perfil':'sbPerfil',
+      'wSub':'wSub','wBtn':'wBtn',
+      'lActivos':'lActivos','lCerrados':'lCerrados','lCitas':'lCitas','lPagos':'lPagos',
+      'qaTitle':'qaTitle',
+      'qa1t':'qa1t','qa1s':'qa1s','qa2t':'qa2t','qa2s':'qa2s',
+      'qa3t':'qa3t','qa3s':'qa3s','qa4t':'qa4t','qa4s':'qa4s',
+      'proxTitle':'proxTitle',
+      'agTitle':'agTitle','agDesc':'agDesc','agLblEsp':'agLblEsp','agLblFecha':'agLblFecha',
+      'agLblHora':'agLblHora','agLblDesc':'agLblDesc','agLblPago':'agLblPago',
+      'btnAgendar':'btnAgendar',
+      'activosTitle':'activosTitle','cerradosTitle':'cerradosTitle',
+      'citasTitle':'citasTitle','pagosTitle':'pagosTitle','perfilTitle':'perfilTitle',
+    };
+    if (el && keyMap[id] && t[keyMap[id]]) el.textContent = t[keyMap[id]];
+  });
+  // Reload dynamic content with new language
+  loadAll();
+}
+
+init();
+</script>
+</body>
+</html>
