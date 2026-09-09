@@ -1467,19 +1467,19 @@ function tplRegSelect(){return`
 function tplRegClient(){return`
   <div class="m-head"><h3>Crear cuenta de Cliente</h3><p>Regístrate para agendar tu consulta</p></div>
   <div class="frow">
-    <div class="fg"><label>Nombre</label><input type="text" placeholder="Juan"/></div>
-    <div class="fg"><label>Apellido</label><input type="text" placeholder="García"/></div>
+    <div class="fg"><label>Nombre</label><input id="rc_nombre" type="text" placeholder="Juan"/></div>
+    <div class="fg"><label>Apellido</label><input id="rc_apellido" type="text" placeholder="García"/></div>
   </div>
-  <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="juan@ejemplo.com"/></div>
-  <div class="fg"><label>Teléfono (EE.UU. o MX)</label><input type="tel" placeholder="+1 312 555 0100"/></div>
+  <div class="fg"><label>Correo electrónico</label><input id="rc_email" type="email" placeholder="juan@ejemplo.com"/></div>
+  <div class="fg"><label>Teléfono (EE.UU. o MX)</label><input id="rc_telefono" type="tel" placeholder="+1 312 555 0100"/></div>
   <div class="frow">
     <div class="fg">
       <label>País de residencia</label>
-      <select><option>Estados Unidos</option><option>México</option><option>Otro</option></select>
+      <select id="rc_pais"><option>Estados Unidos</option><option>México</option><option>Otro</option></select>
     </div>
-    <div class="fg"><label>Ciudad</label><input type="text" placeholder="Chicago, IL"/></div>
+    <div class="fg"><label>Ciudad</label><input id="rc_ciudad" type="text" placeholder="Chicago, IL"/></div>
   </div>
-  <div class="fg"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"/></div>
+  <div class="fg"><label>Contraseña</label><input id="rc_password" type="password" placeholder="Mínimo 8 caracteres"/></div>
   <button class="btn btn-gold btn-full" onclick="simRegClient()">Crear cuenta gratis</button>
   <p class="fnote">Al registrarte aceptas los <a href="#">Términos de uso</a> y la <a href="#">Política de privacidad</a>.</p>
 `}
@@ -1488,11 +1488,11 @@ function tplRegLawyer(){return`
   <div class="m-head"><h3>Registro de Abogado</h3><p>Únete a la red de AbogaMéxico</p></div>
   <div class="fsec">DATOS PERSONALES</div>
   <div class="frow">
-    <div class="fg"><label>Nombre</label><input type="text" placeholder="María"/></div>
-    <div class="fg"><label>Apellido</label><input type="text" placeholder="López"/></div>
+    <div class="fg"><label>Nombre</label><input id="rl_nombre" type="text" placeholder="María"/></div>
+    <div class="fg"><label>Apellido</label><input id="rl_apellido" type="text" placeholder="López"/></div>
   </div>
-  <div class="fg"><label>Correo profesional</label><input type="email" placeholder="lic.maria@despacho.com"/></div>
-  <div class="fg"><label>Teléfono</label><input type="tel" placeholder="+52 55 1234 5678"/></div>
+  <div class="fg"><label>Correo profesional</label><input id="rl_email" type="email" placeholder="lic.maria@despacho.com"/></div>
+  <div class="fg"><label>Teléfono</label><input id="rl_telefono" type="tel" placeholder="+52 55 1234 5678"/></div>
   <div class="fsec" style="margin-top:18px">DATOS PROFESIONALES</div>
   <div class="fg">
     <label>Cédula Profesional (SEP) *</label>
@@ -1502,7 +1502,7 @@ function tplRegLawyer(){return`
   <div class="frow">
     <div class="fg">
       <label>Estado donde ejerce</label>
-      <select>
+      <select id="rl_estado">
         <option value="">Selecciona...</option>
         <option>Ciudad de México</option><option>Jalisco</option>
         <option>Nuevo León</option><option>Puebla</option>
@@ -1511,21 +1511,23 @@ function tplRegLawyer(){return`
         <option>Coahuila</option><option>Oaxaca</option>
       </select>
     </div>
-    <div class="fg"><label>Ciudad</label><input type="text" placeholder="Guadalajara"/></div>
+    <div class="fg"><label>Ciudad</label><input id="rl_ciudad" type="text" placeholder="Guadalajara"/></div>
   </div>
   <div class="fg">
     <label>Especialidad principal</label>
-    <select>
-      <option>Derecho Familiar</option><option>Derecho Migratorio</option>
-      <option>Derecho Civil</option><option>Derecho Inmobiliario</option>
-      <option>Derecho Penal</option><option>Derecho Laboral</option>
+    <select id="rl_especialidad">
+      <option>Derecho Civil</option><option>Derecho Migratorio</option>
+      <option>Derecho Familiar</option><option>Derecho Penal</option>
+      <option>Derecho Inmobiliario</option><option>Derecho Mercantil</option>
+      <option>Derecho Fiscal</option><option>Seguridad Social</option>
+      <option>Derecho Administrativo</option><option>Derecho Agrario</option>
     </select>
   </div>
   <div class="fg">
     <label>Descripción profesional</label>
-    <textarea placeholder="Cuéntale a tus clientes sobre tu experiencia y enfoque..."></textarea>
+    <textarea id="rl_bio" placeholder="Cuéntale a tus clientes sobre tu experiencia y enfoque..."></textarea>
   </div>
-  <div class="fg"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"/></div>
+  <div class="fg"><label>Contraseña</label><input id="rl_password" type="password" placeholder="Mínimo 8 caracteres"/></div>
   <button class="btn btn-gold btn-full" onclick="simRegLawyer()">Solicitar ingreso a la red</button>
   <p class="fnote">Tu cédula será verificada con la SEP antes de publicar tu perfil.</p>
 `}
@@ -1663,15 +1665,13 @@ async function simLogin(){
 
 async function simRegClient(){
   const btn = document.querySelector('.btn.btn-gold.btn-full');
-  const inputs = document.querySelectorAll('.m-body input');
-  const selects = document.querySelectorAll('.m-body select');
-  const nombre = inputs[0]?.value?.trim();
-  const apellido = inputs[1]?.value?.trim();
-  const email = inputs[2]?.value?.trim();
-  const telefono = inputs[3]?.value?.trim();
-  const ciudad = inputs[5]?.value?.trim();
-  const password = inputs[6]?.value?.trim();
-  const pais = selects[0]?.value;
+  const nombre   = document.getElementById('rc_nombre')?.value?.trim();
+  const apellido = document.getElementById('rc_apellido')?.value?.trim();
+  const email    = document.getElementById('rc_email')?.value?.trim();
+  const telefono = document.getElementById('rc_telefono')?.value?.trim();
+  const ciudad   = document.getElementById('rc_ciudad')?.value?.trim();
+  const password = document.getElementById('rc_password')?.value?.trim();
+  const pais     = document.getElementById('rc_pais')?.value;
   if (!nombre || !email || !password) { alert('Completa nombre, correo y contraseña.'); return; }
   if (password.length < 8) { alert('La contraseña debe tener al menos 8 caracteres.'); return; }
   if (btn) { btn.textContent = 'Creando cuenta…'; btn.disabled = true; btn.style.opacity = '.7'; }
@@ -1706,17 +1706,15 @@ async function simRegLawyer(){
     document.getElementById('cedula')?.focus(); return;
   }
   const btn = document.querySelector('.btn.btn-gold.btn-full');
-  const inputs = document.querySelectorAll('.m-body input');
-  const selects = document.querySelectorAll('.m-body select');
-  const nombre = inputs[0]?.value?.trim();
-  const apellido = inputs[1]?.value?.trim();
-  const email = inputs[2]?.value?.trim();
-  const telefono = inputs[3]?.value?.trim();
-  const estado = selects[0]?.value;
-  const ciudad = inputs[5]?.value?.trim();
-  const especialidad = selects[1]?.value;
-  const bio = document.querySelector('.m-body textarea')?.value?.trim();
-  const password = inputs[6]?.value?.trim();
+  const nombre      = document.getElementById('rl_nombre')?.value?.trim();
+  const apellido    = document.getElementById('rl_apellido')?.value?.trim();
+  const email       = document.getElementById('rl_email')?.value?.trim();
+  const telefono    = document.getElementById('rl_telefono')?.value?.trim();
+  const estado      = document.getElementById('rl_estado')?.value;
+  const ciudad      = document.getElementById('rl_ciudad')?.value?.trim();
+  const especialidad= document.getElementById('rl_especialidad')?.value;
+  const bio         = document.getElementById('rl_bio')?.value?.trim();
+  const password    = document.getElementById('rl_password')?.value?.trim();
   if (!nombre || !email || !password) { alert('Completa nombre, correo y contraseña.'); return; }
   if (password.length < 8) { alert('La contraseña debe tener al menos 8 caracteres.'); return; }
   if (btn) { btn.textContent = 'Enviando solicitud…'; btn.disabled = true; btn.style.opacity = '.7'; }
