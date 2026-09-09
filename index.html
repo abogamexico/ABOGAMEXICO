@@ -843,6 +843,22 @@ footer { background: var(--azul-oscuro); padding: 80px 0 40px; border-top: 1px s
   .lp-cta-box { padding: 32px 22px; }
 }
 
+
+/* ── LANG SWITCHER ── */
+.btn-lang {
+  background: rgba(185,206,237,0.12);
+  border: 1px solid rgba(185,206,237,0.35);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  letter-spacing: .04em;
+}
+.btn-lang:hover { background: rgba(185,206,237,0.22); border-color: var(--celeste); }
+
 </style>
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -872,27 +888,26 @@ footer { background: var(--azul-oscuro); padding: 80px 0 40px; border-top: 1px s
         <span class="logo-sub">Consultorio Jurídico Virtual</span>
       </div>
     </div>
-    <nav class="nav-links">
-      <a href="#como-funciona">Cómo funciona</a>
-      <a href="#abogados">Abogados</a>
-      <a href="#especialidades">Especialidades</a>
-      <a href="#panel-abogados">Abogados</a>
-      <a href="#precios">Precios</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#como-funciona" data-es="Cómo funciona" data-en="How it works">Cómo funciona</a>
+      <a href="#especialidades" data-es="Especialidades" data-en="Specialties">Especialidades</a>
+      <a href="#panel-abogados" data-es="Abogados" data-en="Lawyers">Abogados</a>
+      <a href="#precios" data-es="Precios" data-en="Pricing">Precios</a>
     </nav>
     <div class="nav-actions">
-      <button class="btn btn-outline-light" onclick="openModal('login')">Iniciar sesión</button>
-      <button class="btn btn-gold" onclick="openModal('register')">Registrarse</button>
+      <button class="btn btn-lang" id="langBtn" onclick="toggleLang()" title="Switch language">🌐 EN</button>
+      <button class="btn btn-outline-light" id="btnLogin" onclick="openModal('login')">Iniciar sesión</button>
+      <button class="btn btn-gold" id="btnRegister" onclick="openModal('register')">Registrarse</button>
     </div>
     <button class="hamburger" id="ham" onclick="toggleMenu()" aria-label="Menú">
       <span></span><span></span><span></span>
     </button>
   </div>
   <div class="mobile-menu" id="mmenu">
-    <a href="#como-funciona" onclick="closeMenu()">Cómo funciona</a>
-    <a href="#abogados" onclick="closeMenu()">Abogados</a>
-    <a href="#especialidades" onclick="closeMenu()">Especialidades</a>
-    <a href="#panel-abogados" onclick="closeMenu()">Abogados</a>
-    <a href="#precios" onclick="closeMenu()">Precios</a>
+    <a href="#como-funciona" onclick="closeMenu()" data-es="Cómo funciona" data-en="How it works">Cómo funciona</a>
+    <a href="#especialidades" onclick="closeMenu()" data-es="Especialidades" data-en="Specialties">Especialidades</a>
+    <a href="#panel-abogados" onclick="closeMenu()" data-es="Abogados" data-en="Lawyers">Abogados</a>
+    <a href="#precios" onclick="closeMenu()" data-es="Precios" data-en="Pricing">Precios</a>
     <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">
       <button class="btn btn-outline-light" onclick="openModal('login');closeMenu()">Iniciar sesión</button>
       <button class="btn btn-gold" onclick="openModal('register');closeMenu()">Registrarse</button>
@@ -907,7 +922,7 @@ footer { background: var(--azul-oscuro); padding: 80px 0 40px; border-top: 1px s
     <!-- Mapa Norteamérica generado con IA (Higgsfield GPT Image 2) — lado derecho -->
     <img
       id="heroMapImg"
-      src="https://d8j0ntlcm91z4.cloudfront.net/user_3J1WIqLC1JL8GN9nx3Mi7vvxL9n/hf_20260908_234016_d97ba589-e224-493d-a7d0-662812c28cd9.png"
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_3J1WIqLC1JL8GN9nx3Mi7vvxL9n/hf_20260909_195856_fb400888-293b-4c77-bd53-290ded254973.png"
       alt="Mapa de conexiones legales USA-México"
       style="position:absolute;right:0;top:0;width:52%;height:100%;object-fit:cover;object-position:center center;z-index:0;"
     />
@@ -917,7 +932,7 @@ footer { background: var(--azul-oscuro); padding: 80px 0 40px; border-top: 1px s
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Justicia digital sin fronteras</div>
-    <h1 class="hero-title">Tu abogado en México,<br/><em>donde sea que estés.</em></h1>
+    <h1 class="hero-title" id="heroTitle">Tu abogado en México,<br/><em>donde sea que estés.</em></h1>
     <p class="hero-desc">Conectamos a mexicanos en EE.UU. con abogados certificados en México. Videollamadas seguras, pagos en línea y gestión de casos 100% remota.</p>
     <div class="hero-ctas">
       <button class="btn btn-gold btn-lg" onclick="openModal('register-client')">Agenda tu consulta express</button>
@@ -1064,7 +1079,7 @@ footer { background: var(--azul-oscuro); padding: 80px 0 40px; border-top: 1px s
         <!-- Imagen de videollamada generada con IA (Higgsfield GPT Image 2) -->
         <img
           class="experience-img"
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_3J1WIqLC1JL8GN9nx3Mi7vvxL9n/hf_20260908_233253_fb160eca-d93f-4b69-b83a-3aa16e18c358.png"
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_3J1WIqLC1JL8GN9nx3Mi7vvxL9n/hf_20260909_195856_fb400888-293b-4c77-bd53-290ded254973.png"
           alt="Abogado mexicano en videollamada con cliente en EE.UU."
         />
         <div class="experience-overlay">
@@ -1225,525 +1240,531 @@ footer { background: var(--azul-oscuro); padding: 80px 0 40px; border-top: 1px s
 
 <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
 <script>
-/* ── SUPABASE CONFIG ── */
+/* ════════════════════════════════
+   ABOGAMÉXICO — app.js CLEAN v3
+════════════════════════════════ */
+
+/* ── SUPABASE ── */
 const _sb = window.supabase.createClient(
   'https://rqppqpkwzatrnaymsymc.supabase.co',
   'sb_publishable_WOdewnKgzC7S6Swd8p7Ttw_NOh9_nEr'
 );
 
-/* ── SESIÓN ACTIVA ── */
+/* ── SESSION ── */
 let _session = null;
-_sb.auth.getSession().then(({ data }) => {
-  _session = data.session;
-  if (_session) updateNavForLoggedUser(_session.user);
-});
-_sb.auth.onAuthStateChange((_event, session) => {
-  _session = session;
-  if (session) updateNavForLoggedUser(session.user);
+
+_sb.auth.getSession().then(function(res) {
+  _session = res.data.session;
+  if (_session) showLoggedNav(_session.user);
 });
 
-function updateNavForLoggedUser(user) {
-  const actions = document.querySelector('.nav-actions');
+_sb.auth.onAuthStateChange(function(event, session) {
+  _session = session;
+  if (session) {
+    showLoggedNav(session.user);
+  } else {
+    showGuestNav();
+  }
+});
+
+/* ── HANDLE EMAIL CONFIRM REDIRECT ── */
+(function() {
+  var h = window.location.hash;
+  if (h && (h.includes('error') || h.includes('access_token'))) {
+    history.replaceState(null, '', window.location.pathname);
+    if (h.includes('error')) {
+      setTimeout(function() {
+        var d = document.createElement('div');
+        d.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#fff;border-left:4px solid #CAA181;padding:16px 24px;border-radius:10px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.15);max-width:400px;text-align:center;font-family:Inter,sans-serif;font-size:14px';
+        d.innerHTML = '<b style="color:#00183D">El link expiró</b><br><span style="color:#666">Por favor inicia sesión directamente.</span>';
+        var btn = document.createElement('button');
+        btn.textContent = 'Iniciar sesión';
+        btn.style.cssText = 'display:block;margin:10px auto 0;background:#CAA181;color:#fff;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-weight:600';
+        btn.onclick = function() { d.remove(); openModal('login'); };
+        d.appendChild(btn);
+        document.body.appendChild(d);
+        setTimeout(function() { if (d.parentNode) d.remove(); }, 7000);
+      }, 500);
+    }
+  }
+})();
+
+function showLoggedNav(user) {
+  var actions = document.querySelector('.nav-actions');
   if (!actions) return;
-  actions.innerHTML = `
-    <span style="color:rgba(255,255,255,.7);font-size:.82rem">${user.email}</span>
-    <button class="btn btn-outline-light" onclick="cerrarSesion()">Salir</button>
-  `;
+  var name = (user.user_metadata && user.user_metadata.nombre) ? user.user_metadata.nombre : user.email.split('@')[0];
+  actions.innerHTML =
+    '<span style="color:rgba(255,255,255,.75);font-size:.82rem">' + name + '</span>' +
+    '<a href="/dashboard.html" style="background:#CAA181;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:.85rem;font-weight:600;text-decoration:none;cursor:pointer">Mi panel</a>' +
+    '<button onclick="doSignOut()" style="background:transparent;color:#fff;border:1.5px solid rgba(185,206,237,.4);padding:10px 18px;border-radius:8px;font-size:.85rem;font-weight:500;cursor:pointer">Salir</button>';
 }
 
-async function cerrarSesion() {
+function showGuestNav() {
+  var actions = document.querySelector('.nav-actions');
+  if (!actions) return;
+  actions.innerHTML =
+    '<button class="btn btn-lang" id="langBtn" onclick="toggleLang()">EN</button>' +
+    '<button class="btn btn-outline-light" onclick="openModal(\'login\')">Iniciar sesión</button>' +
+    '<button class="btn btn-gold" onclick="openModal(\'register\')">Registrarse</button>';
+}
+
+async function doSignOut() {
   await _sb.auth.signOut();
   location.reload();
 }
 
-/* ── DATOS EJEMPLO (mientras no hay BD poblada) ── */
-const ABOGADOS = [
-  {id:1,n:'Lic. Sofía Ramírez',  ini:'SR',e:'CDMX',     c:'Ciudad de México',esp:'Derecho Familiar',    r:4.9,rv:87, ced:'2934871'},
-  {id:2,n:'Lic. Carlos Mendoza', ini:'CM',e:'Jalisco',   c:'Guadalajara',     esp:'Derecho Migratorio', r:4.8,rv:112,ced:'3821045'},
-  {id:3,n:'Lic. Ana Torres',     ini:'AT',e:'Nuevo León',c:'Monterrey',       esp:'Derecho Civil',      r:4.7,rv:64, ced:'4129038'},
-  {id:4,n:'Lic. Jorge Vega',     ini:'JV',e:'Puebla',    c:'Puebla',          esp:'Derecho Inmobiliario',r:4.9,rv:93,ced:'1820394'},
-  {id:5,n:'Lic. María Castillo', ini:'MC',e:'Yucatán',   c:'Mérida',          esp:'Derecho Familiar',   r:5.0,rv:41, ced:'5920173'},
-  {id:6,n:'Lic. Roberto Soto',   ini:'RS',e:'CDMX',      c:'Ciudad de México',esp:'Derecho Penal',      r:4.6,rv:78, ced:'2039471'},
-  {id:7,n:'Lic. Lucía Herrera',  ini:'LH',e:'Guanajuato',c:'León',            esp:'Derecho Laboral',    r:4.8,rv:55, ced:'6103892'},
-  {id:8,n:'Lic. Miguel Flores',  ini:'MF',e:'Jalisco',   c:'Guadalajara',     esp:'Derecho Familiar',   r:4.7,rv:99, ced:'3740182'},
-  {id:9,n:'Lic. Patricia Ruiz',  ini:'PR',e:'Nuevo León',c:'Monterrey',       esp:'Derecho Migratorio', r:4.9,rv:130,ced:'4820194'},
-  {id:10,n:'Lic. Andrés Mora',   ini:'AM',e:'Veracruz',  c:'Veracruz',        esp:'Derecho Civil',      r:4.7,rv:62, ced:'7201483'},
-];
-
 /* ── NAVBAR SCROLL ── */
-window.addEventListener('scroll',()=>{
-  document.getElementById('navbar').classList.toggle('scrolled',scrollY>55);
+window.addEventListener('scroll', function() {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 55);
 });
 
-/* ── MENÚ MÓVIL ── */
-function toggleMenu(){
-  const h=document.getElementById('ham'),m=document.getElementById('mmenu');
-  h.classList.toggle('open'); m.classList.toggle('open');
+/* ── MOBILE MENU ── */
+function toggleMenu() {
+  document.getElementById('ham').classList.toggle('open');
+  document.getElementById('mmenu').classList.toggle('open');
 }
-function closeMenu(){
+function closeMenu() {
   document.getElementById('ham').classList.remove('open');
   document.getElementById('mmenu').classList.remove('open');
 }
 
-/* ── SCROLL SUAVE ── */
-function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
+/* ── SCROLL ── */
+function goTo(id) { document.getElementById(id) && document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
 
 /* ── REVEAL ON SCROLL ── */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}});
-},{threshold:.12});
-document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+var revObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('in'); revObs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.rv').forEach(function(el) { revObs.observe(el); });
 
-/* ── HERO CANVAS (animación de partículas / red) ── */
-(function(){
-  const cv=document.getElementById('heroCanvas');
-  const ctx=cv.getContext('2d');
-  let W,H,pts=[];
-  const N=55;
-  function resize(){
-    W=cv.width=cv.offsetWidth;
-    H=cv.height=cv.offsetHeight;
-  }
-  function initPts(){
-    pts=[];
-    for(let i=0;i<N;i++){
-      pts.push({
-        x:Math.random()*W,y:Math.random()*H,
-        vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
-        r:Math.random()*1.5+.5
-      });
+/* ── HERO CANVAS (particles) ── */
+(function() {
+  var cv = document.getElementById('heroCanvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var W, H, pts = [];
+  var N = 50;
+  function resize() { W = cv.width = cv.offsetWidth; H = cv.height = cv.offsetHeight; }
+  function initPts() {
+    pts = [];
+    for (var i = 0; i < N; i++) {
+      pts.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-.5)*.3, vy: (Math.random()-.5)*.3 });
     }
   }
-  function draw(){
+  function draw() {
     ctx.clearRect(0,0,W,H);
-    for(let i=0;i<N;i++){
-      const a=pts[i];
-      a.x+=a.vx; a.y+=a.vy;
-      if(a.x<0||a.x>W) a.vx*=-1;
-      if(a.y<0||a.y>H) a.vy*=-1;
-      ctx.beginPath();
-      ctx.arc(a.x,a.y,a.r,0,Math.PI*2);
-      ctx.fillStyle='rgba(185,206,237,.55)';
-      ctx.fill();
-      for(let j=i+1;j<N;j++){
-        const b=pts[j];
-        const d=Math.hypot(a.x-b.x,a.y-b.y);
-        if(d<120){
-          ctx.beginPath();
-          ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
-          ctx.strokeStyle=`rgba(185,206,237,${.18*(1-d/120)})`;
-          ctx.lineWidth=.6;
-          ctx.stroke();
+    for (var i = 0; i < N; i++) {
+      var a = pts[i];
+      a.x += a.vx; a.y += a.vy;
+      if (a.x < 0 || a.x > W) a.vx *= -1;
+      if (a.y < 0 || a.y > H) a.vy *= -1;
+      ctx.beginPath(); ctx.arc(a.x,a.y,1,0,Math.PI*2);
+      ctx.fillStyle = 'rgba(185,206,237,.5)'; ctx.fill();
+      for (var j = i+1; j < N; j++) {
+        var b = pts[j], d = Math.hypot(a.x-b.x, a.y-b.y);
+        if (d < 120) {
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle = 'rgba(185,206,237,' + (.15*(1-d/120)) + ')';
+          ctx.lineWidth = .6; ctx.stroke();
         }
       }
     }
     requestAnimationFrame(draw);
   }
   resize(); initPts(); draw();
-  window.addEventListener('resize',()=>{resize();initPts()});
+  window.addEventListener('resize', function() { resize(); initPts(); });
 })();
 
-/* ── TARJETAS ABOGADOS ── */
-function renderCards(list){
-  const g=document.getElementById('lGrid');
-  if(!list.length){
-    g.innerHTML='<p class="no-results">No se encontraron abogados con esos filtros. Prueba otra búsqueda.</p>';
-    return;
-  }
-  g.innerHTML=list.map(a=>`
-    <div class="lcard">
-      <div class="lcard-top">
-        <div class="lavatar">${a.ini}</div>
-        <div class="lcard-info">
-          <h4>${a.n}</h4>
-          <div class="cedula-tag">Cédula SEP: ${a.ced}</div>
-        </div>
-      </div>
-      <div class="ltags">
-        <span class="ltag">${a.esp}</span>
-        <span class="ltag">${a.e}</span>
-      </div>
-      <div class="lcard-meta">
-        <span class="lrating">★ ${a.r} <span style="opacity:.5">(${a.rv} reseñas)</span></span>
-        <span class="lloc">📍 ${a.c}</span>
-      </div>
-      <div class="lprice">$49.99 USD <span>/ 1 hora</span></div>
-      <button class="btn btn-gold" style="width:100%;font-size:.82rem"
-        onclick="abrirPago('${a.n}','${a.esp}')">
-        Agendar consulta express
-      </button>
-    </div>
-  `).join('');
+/* ── ESPECIALIDADES (filtro) ── */
+function setFiltro(esp) {
+  document.getElementById('precios').scrollIntoView({ behavior: 'smooth' });
 }
-function filtrar(){
-  const e=document.getElementById('fEstado').value;
-  const s=document.getElementById('fEsp').value;
-  renderCards(ABOGADOS.filter(a=>(!e||a.e===e)&&(!s||a.esp===s)));
-}
-function setFiltro(esp){
-  document.getElementById('fEsp').value=esp;
-  filtrar();
-  document.getElementById('abogados').scrollIntoView({behavior:'smooth'});
-}
-renderCards(ABOGADOS);
 
 /* ── MODAL ENGINE ── */
-function openModal(tipo){
+function openModal(tipo) {
   document.getElementById('overlay').classList.add('open');
-  const b=document.getElementById('mBody');
-  const map={
-    'login':        tplLogin,
-    'register':     tplRegSelect,
+  var b = document.getElementById('mBody');
+  var map = {
+    'login': tplLogin,
+    'login-lawyer': tplLoginLawyer,
+    'register': tplRegSelect,
     'register-client': tplRegClient,
-    'register-lawyer': tplRegLawyer,
+    'register-lawyer': tplRegLawyer
   };
-  if(map[tipo]) b.innerHTML=map[tipo]();
+  if (map[tipo]) b.innerHTML = map[tipo]();
 }
-function closeModal(){
+
+function closeModal() {
   document.getElementById('overlay').classList.remove('open');
-  document.getElementById('mBody').innerHTML='';
+  document.getElementById('mBody').innerHTML = '';
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 
-/* ── TEMPLATES ── */
-function tplLoginLawyer(){return`
-  <div class="m-head">
-    <div class="modal-lawyer-badge">⚖️ Portal Exclusivo de Abogados</div>
-    <h3>Acceso — Abogados</h3>
-    <p>Ingresa a tu panel de casos y consultas</p>
-  </div>
-  <div class="fg"><label>Correo profesional</label><input type="email" placeholder="lic@despacho.com"/></div>
-  <div class="fg"><label>Contraseña</label><input type="password" placeholder="••••••••"/></div>
-  <button class="btn btn-gold btn-full" onclick="simLogin()">Entrar al panel</button>
-  <p class="fnote">¿Nuevo en la plataforma? <a onclick="openModal('register-lawyer')">Solicitar ingreso</a></p>
-  <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f0f0f0">
-    <p style="font-size:.78rem;color:#aaa;text-align:center;margin-bottom:14px">Una vez dentro tendrás acceso a:</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div style="background:#f8faff;border-radius:8px;padding:10px;font-size:.75rem;color:#444;text-align:center">📂 Casos abiertos</div>
-      <div style="background:#f8faff;border-radius:8px;padding:10px;font-size:.75rem;color:#444;text-align:center">✅ Casos cerrados</div>
-      <div style="background:#f8faff;border-radius:8px;padding:10px;font-size:.75rem;color:#444;text-align:center">📆 Mi agenda</div>
-      <div style="background:#f8faff;border-radius:8px;padding:10px;font-size:.75rem;color:#444;text-align:center">💰 Mis pagos</div>
-    </div>
-  </div>
-`}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
 
-function tplLogin(){return`
-  <div class="m-head"><h3>Iniciar sesión</h3><p>Accede a tu cuenta de AbogaMéxico</p></div>
-  <div class="m-tabs">
-    <button class="mtab on" onclick="switchTab(this,'tp-c')">Soy Cliente</button>
-    <button class="mtab"    onclick="switchTab(this,'tp-a')">Soy Abogado</button>
-  </div>
-  <div class="tab-pane on" id="tp-c">
-    <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="tucorreo@ejemplo.com"/></div>
-    <div class="fg"><label>Contraseña</label><input type="password" placeholder="••••••••"/></div>
-    <button class="btn btn-gold btn-full" onclick="simLogin()">Entrar</button>
-    <p class="fnote">¿No tienes cuenta? <a onclick="openModal('register')">Regístrate gratis</a></p>
-  </div>
-  <div class="tab-pane" id="tp-a">
-    <div class="fg"><label>Correo electrónico profesional</label><input type="email" placeholder="lic@despacho.com"/></div>
-    <div class="fg"><label>Contraseña</label><input type="password" placeholder="••••••••"/></div>
-    <button class="btn btn-gold btn-full" onclick="simLogin()">Entrar</button>
-    <p class="fnote">¿Aún no registrado? <a onclick="openModal('register-lawyer')">Únete como abogado</a></p>
-  </div>
-`}
-
-function tplRegSelect(){return`
-  <div class="m-head"><h3>Crear cuenta</h3><p>¿Cómo quieres registrarte?</p></div>
-  <div style="display:grid;gap:14px">
-    <div class="step" style="cursor:pointer;padding:22px" onclick="openModal('register-client')">
-      <div style="font-size:1.6rem;margin-bottom:8px">👤</div>
-      <h3 style="font-size:1rem;margin-bottom:4px">Soy Cliente</h3>
-      <p style="font-size:.82rem">Busco un abogado en México para mi asunto legal.</p>
-    </div>
-    <div class="step" style="cursor:pointer;padding:22px" onclick="openModal('register-lawyer')">
-      <div style="font-size:1.6rem;margin-bottom:8px">⚖️</div>
-      <h3 style="font-size:1rem;margin-bottom:4px">Soy Abogado</h3>
-      <p style="font-size:.82rem">Soy licenciado y quiero captar clientes en línea.</p>
-    </div>
-  </div>
-  <p class="fnote" style="margin-top:14px">¿Ya tienes cuenta? <a onclick="openModal('login')">Inicia sesión</a></p>
-`}
-
-function tplRegClient(){return`
-  <div class="m-head"><h3>Crear cuenta de Cliente</h3><p>Regístrate para agendar tu consulta</p></div>
-  <div class="frow">
-    <div class="fg"><label>Nombre</label><input id="rc_nombre" type="text" placeholder="Juan"/></div>
-    <div class="fg"><label>Apellido</label><input id="rc_apellido" type="text" placeholder="García"/></div>
-  </div>
-  <div class="fg"><label>Correo electrónico</label><input id="rc_email" type="email" placeholder="juan@ejemplo.com"/></div>
-  <div class="fg"><label>Teléfono (EE.UU. o MX)</label><input id="rc_telefono" type="tel" placeholder="+1 312 555 0100"/></div>
-  <div class="frow">
-    <div class="fg">
-      <label>País de residencia</label>
-      <select id="rc_pais"><option>Estados Unidos</option><option>México</option><option>Otro</option></select>
-    </div>
-    <div class="fg"><label>Ciudad</label><input id="rc_ciudad" type="text" placeholder="Chicago, IL"/></div>
-  </div>
-  <div class="fg"><label>Contraseña</label><input id="rc_password" type="password" placeholder="Mínimo 8 caracteres"/></div>
-  <button class="btn btn-gold btn-full" onclick="simRegClient()">Crear cuenta gratis</button>
-  <p class="fnote">Al registrarte aceptas los <a href="#">Términos de uso</a> y la <a href="#">Política de privacidad</a>.</p>
-`}
-
-function tplRegLawyer(){return`
-  <div class="m-head"><h3>Registro de Abogado</h3><p>Únete a la red de AbogaMéxico</p></div>
-  <div class="fsec">DATOS PERSONALES</div>
-  <div class="frow">
-    <div class="fg"><label>Nombre</label><input id="rl_nombre" type="text" placeholder="María"/></div>
-    <div class="fg"><label>Apellido</label><input id="rl_apellido" type="text" placeholder="López"/></div>
-  </div>
-  <div class="fg"><label>Correo profesional</label><input id="rl_email" type="email" placeholder="lic.maria@despacho.com"/></div>
-  <div class="fg"><label>Teléfono</label><input id="rl_telefono" type="tel" placeholder="+52 55 1234 5678"/></div>
-  <div class="fsec" style="margin-top:18px">DATOS PROFESIONALES</div>
-  <div class="fg">
-    <label>Cédula Profesional (SEP) *</label>
-    <input type="text" id="cedula" placeholder="Ej. 3821045" maxlength="8" oninput="valCedula(this)"/>
-    <div id="cedMsg"></div>
-  </div>
-  <div class="frow">
-    <div class="fg">
-      <label>Estado donde ejerce</label>
-      <select id="rl_estado">
-        <option value="">Selecciona...</option>
-        <option>Ciudad de México</option><option>Jalisco</option>
-        <option>Nuevo León</option><option>Puebla</option>
-        <option>Yucatán</option><option>Guanajuato</option>
-        <option>Veracruz</option><option>Chihuahua</option>
-        <option>Coahuila</option><option>Oaxaca</option>
-      </select>
-    </div>
-    <div class="fg"><label>Ciudad</label><input id="rl_ciudad" type="text" placeholder="Guadalajara"/></div>
-  </div>
-  <div class="fg">
-    <label>Especialidad principal</label>
-    <select id="rl_especialidad">
-      <option>Derecho Civil</option><option>Derecho Migratorio</option>
-      <option>Derecho Familiar</option><option>Derecho Penal</option>
-      <option>Derecho Inmobiliario</option><option>Derecho Mercantil</option>
-      <option>Derecho Fiscal</option><option>Seguridad Social</option>
-      <option>Derecho Administrativo</option><option>Derecho Agrario</option>
-    </select>
-  </div>
-  <div class="fg">
-    <label>Descripción profesional</label>
-    <textarea id="rl_bio" placeholder="Cuéntale a tus clientes sobre tu experiencia y enfoque..."></textarea>
-  </div>
-  <div class="fg"><label>Contraseña</label><input id="rl_password" type="password" placeholder="Mínimo 8 caracteres"/></div>
-  <button class="btn btn-gold btn-full" onclick="simRegLawyer()">Solicitar ingreso a la red</button>
-  <p class="fnote">Tu cédula será verificada con la SEP antes de publicar tu perfil.</p>
-`}
-
-function tplPago(nombre, esp){
-  const hoy=new Date().toISOString().split('T')[0];
-  return`
-  <div class="m-head"><h3>Agendar consulta</h3><p>Con ${nombre} · ${esp}</p></div>
-  <div class="pay-summary">
-    <div class="pay-amt">$49.99 <span style="font-size:1rem;font-weight:400;color:#666">USD</span></div>
-    <div class="pay-desc">1 hora de consulta por videollamada · Pago único sin suscripción</div>
-  </div>
-  <div class="fsec">FECHA Y HORA</div>
-  <div class="frow">
-    <div class="fg"><label>Fecha</label><input type="date" id="fDate" min="${hoy}"/></div>
-    <div class="fg">
-      <label>Hora (Hora Central MX)</label>
-      <select id="fHour">
-        <option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
-        <option>12:00 PM</option><option>02:00 PM</option><option>03:00 PM</option>
-        <option>04:00 PM</option><option>05:00 PM</option>
-      </select>
-    </div>
-  </div>
-  <div class="fsec" style="margin-top:4px">MÉTODO DE PAGO</div>
-  <div class="pay-methods">
-    <div class="pmethod on" onclick="selPay(this)">💳 Tarjeta</div>
-    <div class="pmethod"   onclick="selPay(this)">🅿️ PayPal</div>
-  </div>
-  <div id="cardArea">
-    <div class="fg"><label>Número de tarjeta</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19" oninput="fmtCard(this)"/></div>
-    <div class="frow">
-      <div class="fg"><label>Vencimiento</label><input type="text" placeholder="MM / AA" maxlength="7"/></div>
-      <div class="fg"><label>CVV</label><input type="text" placeholder="123" maxlength="4"/></div>
-    </div>
-    <div class="fg"><label>Nombre en la tarjeta</label><input type="text" placeholder="JUAN GARCIA"/></div>
-  </div>
-  <button class="btn btn-gold btn-full" onclick="procesarPago('${nombre}')">
-    Pagar $49.99 USD y confirmar cita
-  </button>
-  <div class="stripe-note">🔒 Pago seguro procesado por <strong>Stripe</strong> · Cifrado TLS / PCI DSS</div>
-`}
-
-function tplConfirm(nombre, fecha, hora){
-  const rid='am-'+Math.random().toString(36).slice(2,10);
-  window._lastRoom=rid;
-  return`
-  <div class="confirm">
-    <div class="confirm-ico">✅</div>
-    <h3>¡Cita confirmada!</h3>
-    <p>Tu consulta con <strong>${nombre}</strong> está agendada para:</p>
-    <p><strong>${fecha||'Próxima disponibilidad'}</strong> a las <strong>${hora||'10:00 AM'}</strong> (Hora Central MX)</p>
-    <p style="margin-top:8px">Tu sala de videollamada:</p>
-    <div class="room-link">meet.jit.si/${rid}</div>
-    <div class="confirm-btns">
-      <button class="btn btn-gold" onclick="abrirVideo('${rid}')">Unirse ahora a la sala</button>
-      <button class="btn btn-outline" onclick="closeModal()">Cerrar</button>
-    </div>
-    <p style="font-size:.73rem;color:#bbb;margin-top:14px">El cargo aparecerá como ABOGAMEXICO en tu estado de cuenta.</p>
-  </div>
-`}
-
-function tplVideo(rid){return`
-  <div class="m-head"><h3>Sala de consulta</h3></div>
-  <div class="vroom">
-    <div class="vroom-head">
-      <h4>🔒 Sesión cifrada · AbogaMéxico</h4>
-      <span class="live">● EN VIVO</span>
-    </div>
-    <iframe
-      src="https://meet.jit.si/${rid}#config.startWithVideoMuted=false&config.startWithAudioMuted=false&interfaceConfig.SHOW_JITSI_WATERMARK=false&interfaceConfig.TOOLBAR_BUTTONS=['microphone','camera','hangup','chat','tileview']"
-      allow="camera;microphone;fullscreen;display-capture"
-      title="Videollamada AbogaMéxico"></iframe>
-    <div class="vroom-ctrl">
-      <button class="vbtn mic" title="Silenciar">🎤</button>
-      <button class="vbtn end" onclick="closeModal()" title="Finalizar">📵</button>
-      <button class="vbtn cam" title="Cámara">📷</button>
-    </div>
-  </div>
-  <p style="font-size:.76rem;color:#aaa;text-align:center;margin-top:10px">La sesión se registra en tu expediente digital.</p>
-`}
-
-/* ── FUNCIONES DE INTERACCIÓN ── */
-function switchTab(btn,id){
-  btn.closest('.m-body').querySelectorAll('.mtab').forEach(t=>t.classList.remove('on'));
-  btn.classList.add('on');
-  btn.closest('.m-body').querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
+/* ── MODAL TEMPLATES ── */
+function tplLogin() {
+  return '<div class="m-head"><h3>Iniciar sesión</h3><p>Accede a tu cuenta de AbogaMéxico</p></div>' +
+    '<div class="m-tabs"><button class="mtab on" onclick="switchTab(this,\'tp-c\')">Soy Cliente</button>' +
+    '<button class="mtab" onclick="switchTab(this,\'tp-a\')">Soy Abogado</button></div>' +
+    '<div class="tab-pane on" id="tp-c">' +
+    '<div class="fg"><label>Correo</label><input id="li_email" type="email" placeholder="tucorreo@ejemplo.com"/></div>' +
+    '<div class="fg"><label>Contraseña</label><input id="li_pass" type="password" placeholder="••••••••"/></div>' +
+    '<button class="btn btn-gold btn-full" onclick="doLogin()">Entrar</button>' +
+    '<p class="fnote">¿No tienes cuenta? <a onclick="openModal(\'register\')">Regístrate gratis</a></p></div>' +
+    '<div class="tab-pane" id="tp-a">' +
+    '<div class="fg"><label>Correo profesional</label><input id="la_email" type="email" placeholder="lic@despacho.com"/></div>' +
+    '<div class="fg"><label>Contraseña</label><input id="la_pass" type="password" placeholder="••••••••"/></div>' +
+    '<button class="btn btn-gold btn-full" onclick="doLoginLawyer()">Entrar al panel</button>' +
+    '<p class="fnote">¿No registrado? <a onclick="openModal(\'register-lawyer\')">Únete como abogado</a></p></div>';
 }
-function valCedula(inp){
-  const v=inp.value.replace(/\D/g,''); inp.value=v;
-  const m=document.getElementById('cedMsg');
-  if(!m) return;
-  if(v.length>=6&&v.length<=8){m.className='fok';m.textContent='✓ Formato válido — se verificará con la SEP';}
-  else if(v.length>0){m.className='ferr';m.textContent='La cédula debe tener entre 6 y 8 dígitos.';}
-  else{m.textContent='';}
+
+function tplLoginLawyer() {
+  return '<div class="m-head"><h3>Acceso — Abogados</h3><p>Ingresa a tu panel de casos</p></div>' +
+    '<div class="fg"><label>Correo profesional</label><input id="la2_email" type="email" placeholder="lic@despacho.com"/></div>' +
+    '<div class="fg"><label>Contraseña</label><input id="la2_pass" type="password" placeholder="••••••••"/></div>' +
+    '<button class="btn btn-gold btn-full" onclick="doLoginLawyerDirect()">Entrar</button>' +
+    '<p class="fnote">¿Nuevo? <a onclick="openModal(\'register-lawyer\')">Solicitar ingreso</a></p>';
 }
-function fmtCard(inp){
-  let v=inp.value.replace(/\D/g,'').slice(0,16);
-  inp.value=v.match(/.{1,4}/g)?.join(' ')||v;
+
+function tplRegSelect() {
+  return '<div class="m-head"><h3>Crear cuenta</h3><p>¿Cómo quieres registrarte?</p></div>' +
+    '<div style="display:grid;gap:14px">' +
+    '<div class="step" style="cursor:pointer;padding:20px" onclick="openModal(\'register-client\')">' +
+    '<div style="font-size:1.5rem;margin-bottom:8px">👤</div>' +
+    '<h3 style="font-size:1rem;margin-bottom:4px">Soy Cliente</h3>' +
+    '<p style="font-size:.82rem">Busco un abogado en México para mi asunto legal.</p></div>' +
+    '<div class="step" style="cursor:pointer;padding:20px" onclick="openModal(\'register-lawyer\')">' +
+    '<div style="font-size:1.5rem;margin-bottom:8px">⚖️</div>' +
+    '<h3 style="font-size:1rem;margin-bottom:4px">Soy Abogado</h3>' +
+    '<p style="font-size:.82rem">Soy licenciado y quiero captar clientes en línea.</p></div></div>' +
+    '<p class="fnote" style="margin-top:14px">¿Ya tienes cuenta? <a onclick="openModal(\'login\')">Inicia sesión</a></p>';
 }
-function selPay(el){
-  el.closest('.pay-methods').querySelectorAll('.pmethod').forEach(m=>m.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById('cardArea').style.display=el.textContent.includes('Tarjeta')?'block':'none';
+
+function tplRegClient() {
+  return '<div class="m-head"><h3>Crear cuenta de Cliente</h3><p>Regístrate para agendar tu consulta</p></div>' +
+    '<div class="frow">' +
+    '<div class="fg"><label>Nombre</label><input id="rc_nombre" type="text" placeholder="Juan"/></div>' +
+    '<div class="fg"><label>Apellido</label><input id="rc_apellido" type="text" placeholder="García"/></div></div>' +
+    '<div class="fg"><label>Correo electrónico</label><input id="rc_email" type="email" placeholder="juan@ejemplo.com"/></div>' +
+    '<div class="fg"><label>Teléfono</label><input id="rc_telefono" type="tel" placeholder="+1 312 555 0100"/></div>' +
+    '<div class="frow">' +
+    '<div class="fg"><label>País</label><select id="rc_pais"><option>Estados Unidos</option><option>México</option><option>Otro</option></select></div>' +
+    '<div class="fg"><label>Ciudad</label><input id="rc_ciudad" type="text" placeholder="Chicago, IL"/></div></div>' +
+    '<div class="fg"><label>Contraseña (mín. 8 caracteres)</label><input id="rc_pass" type="password" placeholder="••••••••"/></div>' +
+    '<button class="btn btn-gold btn-full" onclick="doRegClient()">Crear cuenta gratis</button>' +
+    '<p class="fnote">Al registrarte aceptas los <a href="#">Términos de uso</a>.</p>';
 }
-function abrirPago(nombre,esp){
-  openModal('_'); document.getElementById('mBody').innerHTML=tplPago(nombre,esp);
+
+function tplRegLawyer() {
+  return '<div class="m-head"><h3>Registro de Abogado</h3><p>Únete a la red de AbogaMéxico</p></div>' +
+    '<div class="fsec">DATOS PERSONALES</div>' +
+    '<div class="frow">' +
+    '<div class="fg"><label>Nombre</label><input id="rl_nombre" type="text" placeholder="María"/></div>' +
+    '<div class="fg"><label>Apellido</label><input id="rl_apellido" type="text" placeholder="López"/></div></div>' +
+    '<div class="fg"><label>Correo profesional</label><input id="rl_email" type="email" placeholder="lic@despacho.com"/></div>' +
+    '<div class="fg"><label>Teléfono</label><input id="rl_tel" type="tel" placeholder="+52 55 1234 5678"/></div>' +
+    '<div class="fsec" style="margin-top:16px">DATOS PROFESIONALES</div>' +
+    '<div class="fg"><label>Cédula Profesional (SEP) *</label>' +
+    '<input id="cedula" type="text" placeholder="Ej. 3821045" maxlength="8" oninput="valCedula(this)"/>' +
+    '<div id="cedMsg"></div></div>' +
+    '<div class="frow">' +
+    '<div class="fg"><label>Estado donde ejerce</label><select id="rl_estado">' +
+    '<option value="">Selecciona...</option><option>Ciudad de México</option><option>Jalisco</option>' +
+    '<option>Nuevo León</option><option>Puebla</option><option>Yucatán</option>' +
+    '<option>Guanajuato</option><option>Veracruz</option><option>Chihuahua</option>' +
+    '<option>Coahuila</option><option>Oaxaca</option></select></div>' +
+    '<div class="fg"><label>Ciudad</label><input id="rl_ciudad" type="text" placeholder="Guadalajara"/></div></div>' +
+    '<div class="fg"><label>Especialidad</label><select id="rl_esp">' +
+    '<option>Derecho Civil</option><option>Derecho Migratorio</option><option>Derecho Familiar</option>' +
+    '<option>Derecho Penal</option><option>Derecho Inmobiliario</option><option>Derecho Mercantil</option>' +
+    '<option>Derecho Fiscal</option><option>Seguridad Social</option>' +
+    '<option>Derecho Administrativo</option><option>Derecho Agrario</option></select></div>' +
+    '<div class="fg"><label>Descripción profesional</label>' +
+    '<textarea id="rl_bio" placeholder="Tu experiencia y enfoque..." style="resize:vertical;min-height:70px"></textarea></div>' +
+    '<div class="fg"><label>Contraseña (mín. 8 caracteres)</label><input id="rl_pass" type="password" placeholder="••••••••"/></div>' +
+    '<button class="btn btn-gold btn-full" onclick="doRegLawyer()">Solicitar ingreso a la red</button>' +
+    '<p class="fnote">Tu cédula será verificada con la SEP antes de publicar tu perfil.</p>';
 }
-function procesarPago(nombre){
-  const fecha=document.getElementById('fDate')?.value||'';
-  const hora=document.getElementById('fHour')?.value||'';
-  const btn=document.querySelector('.btn.btn-gold.btn-full');
-  if(btn){btn.textContent='Procesando pago…';btn.disabled=true;btn.style.opacity='.7';}
-  setTimeout(()=>{document.getElementById('mBody').innerHTML=tplConfirm(nombre,fecha,hora);},2200);
+
+function tplPago(nombre, esp) {
+  var hoy = new Date().toISOString().split('T')[0];
+  return '<div class="m-head"><h3>Agendar consulta</h3><p>Con ' + nombre + ' · ' + esp + '</p></div>' +
+    '<div class="pay-summary"><div class="pay-amt">$49.99 <span style="font-size:1rem;font-weight:400;color:#666">USD</span></div>' +
+    '<div class="pay-desc">1 hora de consulta por videollamada</div></div>' +
+    '<div class="fsec">FECHA Y HORA</div>' +
+    '<div class="frow">' +
+    '<div class="fg"><label>Fecha</label><input type="date" id="fDate" min="' + hoy + '"/></div>' +
+    '<div class="fg"><label>Hora (Hora Central MX)</label><select id="fHour">' +
+    '<option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>' +
+    '<option>12:00 PM</option><option>02:00 PM</option><option>03:00 PM</option>' +
+    '<option>04:00 PM</option><option>05:00 PM</option></select></div></div>' +
+    '<div class="fsec" style="margin-top:4px">MÉTODO DE PAGO</div>' +
+    '<div class="pay-methods">' +
+    '<div class="pmethod on" onclick="selPay(this)">💳 Tarjeta</div>' +
+    '<div class="pmethod" onclick="selPay(this)">🅿️ PayPal</div></div>' +
+    '<div id="cardArea">' +
+    '<div class="fg"><label>Número de tarjeta</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19" oninput="fmtCard(this)"/></div>' +
+    '<div class="frow">' +
+    '<div class="fg"><label>Vencimiento</label><input type="text" placeholder="MM / AA" maxlength="7"/></div>' +
+    '<div class="fg"><label>CVV</label><input type="text" placeholder="123" maxlength="4"/></div></div>' +
+    '<div class="fg"><label>Nombre en la tarjeta</label><input type="text" placeholder="JUAN GARCIA"/></div></div>' +
+    '<button class="btn btn-gold btn-full" onclick="procesarPago(\'' + nombre + '\')">Pagar $49.99 USD y confirmar cita</button>' +
+    '<div class="stripe-note">🔒 Pago seguro · Stripe · PCI DSS</div>';
 }
-function abrirVideo(rid){
-  document.getElementById('mBody').innerHTML=tplVideo(rid);
+
+function tplConfirm(nombre, fecha, hora) {
+  var rid = 'am-' + Math.random().toString(36).slice(2,10);
+  return '<div class="confirm">' +
+    '<div class="confirm-ico">✅</div>' +
+    '<h3>¡Cita confirmada!</h3>' +
+    '<p>Tu consulta con <strong>' + nombre + '</strong> está agendada para:</p>' +
+    '<p><strong>' + (fecha||'Próxima disponibilidad') + '</strong> a las <strong>' + (hora||'10:00 AM') + '</strong></p>' +
+    '<p style="margin-top:8px">Tu sala de videollamada:</p>' +
+    '<div class="room-link">meet.jit.si/' + rid + '</div>' +
+    '<div class="confirm-btns">' +
+    '<button class="btn btn-gold" onclick="abrirVideo(\'' + rid + '\')">Unirse ahora</button>' +
+    '<button class="btn btn-outline" onclick="closeModal()">Cerrar</button></div></div>';
 }
-async function simLogin(){
-  const btn = document.querySelector('.btn.btn-gold.btn-full');
-  const inputs = document.querySelectorAll('.m-body input');
-  const email = inputs[0]?.value?.trim();
-  const password = inputs[1]?.value?.trim();
-  if (!email || !password) { alert('Por favor ingresa tu correo y contraseña.'); return; }
-  if (btn) { btn.textContent = 'Verificando…'; btn.disabled = true; btn.style.opacity = '.7'; }
-  const { error } = await _sb.auth.signInWithPassword({ email, password });
-  if (error) {
-    if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; btn.style.opacity = '1'; }
-    alert(error.message.includes('Invalid login') ? 'Correo o contraseña incorrectos.' : error.message);
+
+function tplVideo(rid) {
+  return '<div class="m-head"><h3>Sala de consulta</h3></div>' +
+    '<div class="vroom">' +
+    '<div class="vroom-head"><h4>🔒 Sesión cifrada · AbogaMéxico</h4>' +
+    '<span class="live">● EN VIVO</span></div>' +
+    '<iframe src="https://meet.jit.si/' + rid + '#config.startWithVideoMuted=false" ' +
+    'allow="camera;microphone;fullscreen" title="Videollamada AbogaMéxico"></iframe>' +
+    '<div class="vroom-ctrl">' +
+    '<button class="vbtn mic">🎤</button>' +
+    '<button class="vbtn end" onclick="closeModal()">📵</button>' +
+    '<button class="vbtn cam">📷</button></div></div>' +
+    '<p style="font-size:.76rem;color:#aaa;text-align:center;margin-top:10px">La sesión se registra en tu expediente.</p>';
+}
+
+/* ── AUTH ACTIONS ── */
+async function doLogin() {
+  var email = document.getElementById('li_email') ? document.getElementById('li_email').value.trim() : '';
+  var pass  = document.getElementById('li_pass')  ? document.getElementById('li_pass').value.trim()  : '';
+  if (!email || !pass) { alert('Por favor ingresa tu correo y contraseña.'); return; }
+  var btn = document.querySelector('.btn.btn-gold.btn-full');
+  if (btn) { btn.textContent = 'Verificando...'; btn.disabled = true; }
+  var res = await _sb.auth.signInWithPassword({ email: email, password: pass });
+  if (res.error) {
+    if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; }
+    alert(res.error.message.includes('Invalid') ? 'Correo o contraseña incorrectos.' : res.error.message);
     return;
   }
   closeModal();
+  window.location.href = '/dashboard.html';
 }
 
-async function simRegClient(){
-  const btn = document.querySelector('.btn.btn-gold.btn-full');
-  const nombre   = document.getElementById('rc_nombre')?.value?.trim();
-  const apellido = document.getElementById('rc_apellido')?.value?.trim();
-  const email    = document.getElementById('rc_email')?.value?.trim();
-  const telefono = document.getElementById('rc_telefono')?.value?.trim();
-  const ciudad   = document.getElementById('rc_ciudad')?.value?.trim();
-  const password = document.getElementById('rc_password')?.value?.trim();
-  const pais     = document.getElementById('rc_pais')?.value;
-  if (!nombre || !email || !password) { alert('Completa nombre, correo y contraseña.'); return; }
-  if (password.length < 8) { alert('La contraseña debe tener al menos 8 caracteres.'); return; }
-  if (btn) { btn.textContent = 'Creando cuenta…'; btn.disabled = true; btn.style.opacity = '.7'; }
-  const { data, error } = await _sb.auth.signUp({
-    email, password,
-    options: { data: { nombre, apellido, pais, telefono, ciudad, tipo: 'cliente' } }
+async function doLoginLawyer() { doLogin(); }
+async function doLoginLawyerDirect() {
+  var email = document.getElementById('la2_email') ? document.getElementById('la2_email').value.trim() : '';
+  var pass  = document.getElementById('la2_pass')  ? document.getElementById('la2_pass').value.trim()  : '';
+  if (!email || !pass) { alert('Por favor ingresa tu correo y contraseña.'); return; }
+  var res = await _sb.auth.signInWithPassword({ email: email, password: pass });
+  if (res.error) { alert(res.error.message); return; }
+  closeModal();
+  window.location.href = '/dashboard.html';
+}
+
+async function doRegClient() {
+  var nombre   = document.getElementById('rc_nombre')   ? document.getElementById('rc_nombre').value.trim()   : '';
+  var apellido = document.getElementById('rc_apellido') ? document.getElementById('rc_apellido').value.trim() : '';
+  var email    = document.getElementById('rc_email')    ? document.getElementById('rc_email').value.trim()    : '';
+  var tel      = document.getElementById('rc_telefono') ? document.getElementById('rc_telefono').value.trim() : '';
+  var ciudad   = document.getElementById('rc_ciudad')   ? document.getElementById('rc_ciudad').value.trim()   : '';
+  var pais     = document.getElementById('rc_pais')     ? document.getElementById('rc_pais').value             : '';
+  var pass     = document.getElementById('rc_pass')     ? document.getElementById('rc_pass').value.trim()     : '';
+  if (!nombre || !email || !pass) { alert('Por favor completa nombre, correo y contraseña.'); return; }
+  if (pass.length < 8) { alert('La contraseña debe tener al menos 8 caracteres.'); return; }
+  var btn = document.querySelector('.btn.btn-gold.btn-full');
+  if (btn) { btn.textContent = 'Creando cuenta...'; btn.disabled = true; }
+  var res = await _sb.auth.signUp({
+    email: email, password: pass,
+    options: { data: { nombre: nombre, apellido: apellido, tipo: 'cliente' } }
   });
-  if (error) {
-    if (btn) { btn.textContent = 'Crear cuenta gratis'; btn.disabled = false; btn.style.opacity = '1'; }
-    alert(error.message.includes('already registered') ? 'Este correo ya está registrado. Intenta iniciar sesión.' : error.message);
+  if (res.error) {
+    if (btn) { btn.textContent = 'Crear cuenta gratis'; btn.disabled = false; }
+    alert(res.error.message.includes('already') ? 'Este correo ya está registrado.' : res.error.message);
     return;
   }
-  if (data.user) {
-    await _sb.from('usuarios').upsert({ id: data.user.id, email, nombre, apellido, pais, telefono, ciudad });
+  if (res.data && res.data.user) {
+    await _sb.from('usuarios').upsert({ id: res.data.user.id, email: email, nombre: nombre, apellido: apellido, pais: pais, telefono: tel, ciudad: ciudad });
   }
-  document.getElementById('mBody').innerHTML = `
-    <div class="confirm">
-      <div class="confirm-ico">🎉</div>
-      <h3>¡Cuenta creada!</h3>
-      <p>Bienvenido, <strong>${nombre}</strong>. Revisa tu correo <strong>${email}</strong> para verificar tu cuenta.</p>
-      <div class="confirm-btns" style="margin-top:20px">
-        <button class="btn btn-gold" onclick="closeModal()">Comenzar</button>
-      </div>
-    </div>`;
+  document.getElementById('mBody').innerHTML =
+    '<div class="confirm"><div class="confirm-ico">🎉</div>' +
+    '<h3>¡Cuenta creada!</h3>' +
+    '<p>Bienvenido, <strong>' + nombre + '</strong>. Revisa tu correo <strong>' + email + '</strong> para verificar tu cuenta.</p>' +
+    '<div class="confirm-btns" style="margin-top:20px"><button class="btn btn-gold" onclick="closeModal()">Comenzar</button></div></div>';
 }
 
-async function simRegLawyer(){
-  const cedula = document.getElementById('cedula')?.value || '';
+async function doRegLawyer() {
+  var cedula = document.getElementById('cedula') ? document.getElementById('cedula').value : '';
   if (!cedula || cedula.length < 6) {
-    const m = document.getElementById('cedMsg');
+    var m = document.getElementById('cedMsg');
     if (m) { m.className = 'ferr'; m.textContent = 'Ingresa tu cédula profesional válida.'; }
-    document.getElementById('cedula')?.focus(); return;
-  }
-  const btn = document.querySelector('.btn.btn-gold.btn-full');
-  const nombre      = document.getElementById('rl_nombre')?.value?.trim();
-  const apellido    = document.getElementById('rl_apellido')?.value?.trim();
-  const email       = document.getElementById('rl_email')?.value?.trim();
-  const telefono    = document.getElementById('rl_telefono')?.value?.trim();
-  const estado      = document.getElementById('rl_estado')?.value;
-  const ciudad      = document.getElementById('rl_ciudad')?.value?.trim();
-  const especialidad= document.getElementById('rl_especialidad')?.value;
-  const bio         = document.getElementById('rl_bio')?.value?.trim();
-  const password    = document.getElementById('rl_password')?.value?.trim();
-  if (!nombre || !email || !password) { alert('Completa nombre, correo y contraseña.'); return; }
-  if (password.length < 8) { alert('La contraseña debe tener al menos 8 caracteres.'); return; }
-  if (btn) { btn.textContent = 'Enviando solicitud…'; btn.disabled = true; btn.style.opacity = '.7'; }
-  const { data, error } = await _sb.auth.signUp({
-    email, password,
-    options: { data: { nombre, apellido, tipo: 'abogado', cedula, especialidad } }
-  });
-  if (error) {
-    if (btn) { btn.textContent = 'Solicitar ingreso'; btn.disabled = false; btn.style.opacity = '1'; }
-    alert(error.message.includes('already registered') ? 'Este correo ya está registrado.' : error.message);
     return;
   }
-  if (data.user) {
-    await _sb.from('abogados').upsert({
-      id: data.user.id, email, nombre, apellido, telefono,
-      cedula, especialidad, estado, ciudad, bio, verificado: false
-    });
+  var nombre = document.getElementById('rl_nombre')   ? document.getElementById('rl_nombre').value.trim()   : '';
+  var apellido= document.getElementById('rl_apellido') ? document.getElementById('rl_apellido').value.trim() : '';
+  var email  = document.getElementById('rl_email')    ? document.getElementById('rl_email').value.trim()    : '';
+  var tel    = document.getElementById('rl_tel')      ? document.getElementById('rl_tel').value.trim()      : '';
+  var estado = document.getElementById('rl_estado')   ? document.getElementById('rl_estado').value           : '';
+  var ciudad = document.getElementById('rl_ciudad')   ? document.getElementById('rl_ciudad').value.trim()   : '';
+  var esp    = document.getElementById('rl_esp')      ? document.getElementById('rl_esp').value               : '';
+  var bio    = document.getElementById('rl_bio')      ? document.getElementById('rl_bio').value.trim()      : '';
+  var pass   = document.getElementById('rl_pass')     ? document.getElementById('rl_pass').value.trim()     : '';
+  if (!nombre || !email || !pass) { alert('Completa nombre, correo y contraseña.'); return; }
+  if (pass.length < 8) { alert('La contraseña debe tener al menos 8 caracteres.'); return; }
+  var btn = document.querySelector('.btn.btn-gold.btn-full');
+  if (btn) { btn.textContent = 'Enviando solicitud...'; btn.disabled = true; }
+  var res = await _sb.auth.signUp({
+    email: email, password: pass,
+    options: { data: { nombre: nombre, apellido: apellido, tipo: 'abogado', cedula: cedula } }
+  });
+  if (res.error) {
+    if (btn) { btn.textContent = 'Solicitar ingreso'; btn.disabled = false; }
+    alert(res.error.message.includes('already') ? 'Este correo ya está registrado.' : res.error.message);
+    return;
   }
-  document.getElementById('mBody').innerHTML = `
-    <div class="confirm">
-      <div class="confirm-ico">⚖️</div>
-      <h3>Solicitud enviada</h3>
-      <p>Recibimos tu registro, <strong>${nombre}</strong>. Verificaremos tu cédula <strong>${cedula}</strong> con la SEP en 24–48 horas.</p>
-      <div class="confirm-btns" style="margin-top:20px">
-        <button class="btn btn-gold" onclick="closeModal()">Entendido</button>
-      </div>
-    </div>`;
+  if (res.data && res.data.user) {
+    await _sb.from('abogados').upsert({ id: res.data.user.id, email: email, nombre: nombre, apellido: apellido, telefono: tel, cedula: cedula, especialidad: esp, estado: estado, ciudad: ciudad, bio: bio, verificado: false });
+  }
+  document.getElementById('mBody').innerHTML =
+    '<div class="confirm"><div class="confirm-ico">⚖️</div>' +
+    '<h3>Solicitud enviada</h3>' +
+    '<p>Verificaremos tu cédula <strong>' + cedula + '</strong> con la SEP en 24–48 horas y activaremos tu perfil.</p>' +
+    '<div class="confirm-btns" style="margin-top:20px"><button class="btn btn-gold" onclick="closeModal()">Entendido</button></div></div>';
 }
 
+/* ── PAGO ── */
+function abrirPago(nombre, esp) {
+  openModal('_');
+  document.getElementById('mBody').innerHTML = tplPago(nombre, esp);
+}
+
+function procesarPago(nombre) {
+  var fecha = document.getElementById('fDate')  ? document.getElementById('fDate').value  : '';
+  var hora  = document.getElementById('fHour')  ? document.getElementById('fHour').value  : '';
+  var btn = document.querySelector('.btn.btn-gold.btn-full');
+  if (btn) { btn.textContent = 'Procesando...'; btn.disabled = true; btn.style.opacity = '.7'; }
+  setTimeout(function() {
+    document.getElementById('mBody').innerHTML = tplConfirm(nombre, fecha, hora);
+  }, 2000);
+}
+
+function abrirVideo(rid) {
+  document.getElementById('mBody').innerHTML = tplVideo(rid);
+}
+
+/* ── HELPERS ── */
+function switchTab(btn, id) {
+  btn.closest('.m-body').querySelectorAll('.mtab').forEach(function(t) { t.classList.remove('on'); });
+  btn.classList.add('on');
+  btn.closest('.m-body').querySelectorAll('.tab-pane').forEach(function(p) { p.classList.remove('on'); });
+  var pane = document.getElementById(id);
+  if (pane) pane.classList.add('on');
+}
+
+function valCedula(inp) {
+  inp.value = inp.value.replace(/\D/g, '');
+  var m = document.getElementById('cedMsg');
+  if (!m) return;
+  if (inp.value.length >= 6 && inp.value.length <= 8) {
+    m.className = 'fok'; m.textContent = '✓ Formato válido — se verificará con la SEP';
+  } else if (inp.value.length > 0) {
+    m.className = 'ferr'; m.textContent = 'La cédula debe tener entre 6 y 8 dígitos.';
+  } else { m.textContent = ''; }
+}
+
+function fmtCard(inp) {
+  var v = inp.value.replace(/\D/g,'').slice(0,16);
+  inp.value = (v.match(/.{1,4}/g)||[]).join(' ');
+}
+
+function selPay(el) {
+  el.closest('.pay-methods').querySelectorAll('.pmethod').forEach(function(m) { m.classList.remove('on'); });
+  el.classList.add('on');
+  var ca = document.getElementById('cardArea');
+  if (ca) ca.style.display = el.textContent.includes('Tarjeta') ? 'block' : 'none';
+}
+
+/* ── IDIOMA ── */
+var _lang = 'es';
+var _t = {
+  es: {
+    heroTitle: 'Tu abogado en México,<br><em>donde sea que estés.</em>',
+    heroCta1: 'Agenda tu consulta express', heroCta2: 'Cómo funciona',
+    stat1: 'Abogados certificados', stat2: 'Estados de México', stat3: 'USD por consulta',
+    howTitle: '¿Cómo funciona?', howSub: 'Acceso inmediato a asesoría legal en México desde cualquier parte del mundo.',
+    s1t: 'Agenda tu consulta', s1d: 'Selecciona fecha y hora. Nuestra plataforma te conecta con un especialista disponible.',
+    s2t: 'Paga de forma segura', s2d: 'Paga $49.99 USD con tarjeta o PayPal vía Stripe. Confirmación inmediata.',
+    s3t: 'Videollamada de asesoría', s3d: 'Conéctate desde tu navegador sin descargas. Un abogado certificado te asesora en vivo.',
+    s4t: 'Cita con especialista', s4d: 'Si tu caso requiere representación, agendas y pagas dentro de la plataforma.',
+    specsTitle: 'Especialidades', specsSub: 'Las áreas legales más demandadas por la comunidad mexicana en EE.UU.',
+    priceTitle: 'Precio único y transparente', priceSub: 'Sin costos ocultos. Sin sorpresas.',
+    loginBtn: 'Iniciar sesión', registerBtn: 'Registrarse', langNext: '🌐 EN'
+  },
+  en: {
+    heroTitle: 'Your lawyer in Mexico,<br><em>wherever you are.</em>',
+    heroCta1: 'Book your express consultation', heroCta2: 'How it works',
+    stat1: 'Certified lawyers', stat2: 'Mexican states', stat3: 'USD per consultation',
+    howTitle: 'How does it work?', howSub: 'Immediate access to legal advice in Mexico from anywhere in the world.',
+    s1t: 'Book your consultation', s1d: 'Select a date and time. Our platform connects you directly with an available specialist.',
+    s2t: 'Pay securely', s2d: 'Pay $49.99 USD by card or PayPal via Stripe. Immediate confirmation.',
+    s3t: 'Live video consultation', s3d: 'Connect from your browser, no downloads. A certified lawyer advises you live.',
+    s4t: 'Appointment with specialist', s4d: 'If your case needs representation, book and pay within the platform.',
+    specsTitle: 'Practice Areas', specsSub: 'The most in-demand legal areas for the Mexican community in the U.S.',
+    priceTitle: 'Simple, transparent pricing', priceSub: 'No hidden fees. No surprises.',
+    loginBtn: 'Sign in', registerBtn: 'Sign up', langNext: '🌐 ES'
+  }
+};
+
+function toggleLang() {
+  _lang = _lang === 'es' ? 'en' : 'es';
+  var t = _t[_lang];
+  var lb = document.getElementById('langBtn');
+  if (lb) lb.textContent = t.langNext;
+  var li = document.getElementById('btnLogin');
+  if (li) li.textContent = t.loginBtn;
+  var re = document.getElementById('btnRegister');
+  if (re) re.textContent = t.registerBtn;
+  var ht = document.getElementById('heroTitle');
+  if (ht) ht.innerHTML = t.heroTitle;
+  var hd = document.querySelector('.hero-desc');
+  if (hd) hd.innerHTML = _lang === 'es'
+    ? 'Conectamos a mexicanos en EE.UU. con abogados certificados en México. Videollamadas seguras, pagos en línea y gestión de casos 100% remota.'
+    : 'We connect Mexicans in the U.S. with certified lawyers in Mexico. Secure video calls, online payments and 100% remote case management.';
+  var ctas = document.querySelectorAll('.hero-ctas .btn');
+  if (ctas[0]) ctas[0].textContent = t.heroCta1;
+  if (ctas[1]) ctas[1].textContent = t.heroCta2;
+  var sl = document.querySelectorAll('.hstat-l');
+  if (sl[0]) sl[0].textContent = t.stat1;
+  if (sl[1]) sl[1].textContent = t.stat2;
+  if (sl[2]) sl[2].textContent = t.stat3;
+  var hw = document.querySelector('#como-funciona .sec-head h2');
+  if (hw) hw.textContent = t.howTitle;
+  var hs = document.querySelector('#como-funciona .sec-head p');
+  if (hs) hs.textContent = t.howSub;
+  var steps = document.querySelectorAll('.step');
+  var sd = [{t:t.s1t,d:t.s1d},{t:t.s2t,d:t.s2d},{t:t.s3t,d:t.s3d},{t:t.s4t,d:t.s4d}];
+  steps.forEach(function(s,i) {
+    if (sd[i]) {
+      var h = s.querySelector('h3'); if (h) h.textContent = sd[i].t;
+      var p = s.querySelector('p');  if (p) p.textContent = sd[i].d;
+    }
+  });
+  var sph = document.querySelector('#especialidades .sec-head h2');
+  if (sph) sph.textContent = t.specsTitle;
+  var sps = document.querySelector('#especialidades .sec-head p');
+  if (sps) sps.textContent = t.specsSub;
+  var prh = document.querySelector('#precios .sec-head h2');
+  if (prh) prh.textContent = t.priceTitle;
+  var prs = document.querySelector('#precios .sec-head p');
+  if (prs) prs.textContent = t.priceSub;
+  document.documentElement.lang = _lang;
+}
 </script>
 
 
