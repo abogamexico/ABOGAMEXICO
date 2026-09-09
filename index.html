@@ -844,6 +844,8 @@ footer { background: var(--azul-oscuro); padding: 80px 0 40px; border-top: 1px s
 }
 
 </style>
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -1223,7 +1225,38 @@ footer { background: var(--azul-oscuro); padding: 80px 0 40px; border-top: 1px s
 
 <!-- ═══════════════ JAVASCRIPT ═══════════════ -->
 <script>
-/* ── DATOS ── */
+/* ── SUPABASE CONFIG ── */
+const _sb = window.supabase.createClient(
+   + SUPABASE_URL + ,
+   + SUPABASE_KEY + 
+);
+
+/* ── SESIÓN ACTIVA ── */
+let _session = null;
+_sb.auth.getSession().then(({ data }) => {
+  _session = data.session;
+  if (_session) updateNavForLoggedUser(_session.user);
+});
+_sb.auth.onAuthStateChange((_event, session) => {
+  _session = session;
+  if (session) updateNavForLoggedUser(session.user);
+});
+
+function updateNavForLoggedUser(user) {
+  const actions = document.querySelector('.nav-actions');
+  if (!actions) return;
+  actions.innerHTML = `
+    <span style="color:rgba(255,255,255,.7);font-size:.82rem">${user.email}</span>
+    <button class="btn btn-outline-light" onclick="cerrarSesion()">Salir</button>
+  `;
+}
+
+async function cerrarSesion() {
+  await _sb.auth.signOut();
+  location.reload();
+}
+
+/* ── DATOS EJEMPLO (mientras no hay BD poblada) ── */
 const ABOGADOS = [
   {id:1,n:'Lic. Sofía Ramírez',  ini:'SR',e:'CDMX',     c:'Ciudad de México',esp:'Derecho Familiar',    r:4.9,rv:87, ced:'2934871'},
   {id:2,n:'Lic. Carlos Mendoza', ini:'CM',e:'Jalisco',   c:'Guadalajara',     esp:'Derecho Migratorio', r:4.8,rv:112,ced:'3821045'},
@@ -1612,43 +1645,107 @@ function procesarPago(nombre){
 function abrirVideo(rid){
   document.getElementById('mBody').innerHTML=tplVideo(rid);
 }
-function simLogin(){
-  const btn=document.querySelector('.btn.btn-gold.btn-full');
-  if(btn){btn.textContent='Verificando…';btn.disabled=true;}
-  setTimeout(()=>{closeModal();alert('✓ Sesión iniciada.\n\n(Conecta tu backend para autenticación real con JWT / OAuth)');},1300);
+async function simLogin(){
+  const btn = document.querySelector('.btn.btn-gold.btn-full');
+  const inputs = document.querySelectorAll('.m-body input');
+  const email = inputs[0]?.value?.trim();
+  const password = inputs[1]?.value?.trim();
+  if (!email || !password) { alert('Por favor ingresa tu correo y contraseña.'); return; }
+  if (btn) { btn.textContent = 'Verificando…'; btn.disabled = true; btn.style.opacity = '.7'; }
+  const { error } = await _sb.auth.signInWithPassword({ email, password });
+  if (error) {
+    if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; btn.style.opacity = '1'; }
+    alert(error.message.includes('Invalid login') ? 'Correo o contraseña incorrectos.' : error.message);
+    return;
+  }
+  closeModal();
 }
-function simRegClient(){
-  const btn=document.querySelector('.btn.btn-gold.btn-full');
-  if(btn){btn.textContent='Creando cuenta…';btn.disabled=true;}
-  setTimeout(()=>{document.getElementById('mBody').innerHTML=`
+
+async function simRegClient(){
+  const btn = document.querySelector('.btn.btn-gold.btn-full');
+  const inputs = document.querySelectorAll('.m-body input');
+  const selects = document.querySelectorAll('.m-body select');
+  const nombre = inputs[0]?.value?.trim();
+  const apellido = inputs[1]?.value?.trim();
+  const email = inputs[2]?.value?.trim();
+  const telefono = inputs[3]?.value?.trim();
+  const ciudad = inputs[5]?.value?.trim();
+  const password = inputs[6]?.value?.trim();
+  const pais = selects[0]?.value;
+  if (!nombre || !email || !password) { alert('Completa nombre, correo y contraseña.'); return; }
+  if (password.length < 8) { alert('La contraseña debe tener al menos 8 caracteres.'); return; }
+  if (btn) { btn.textContent = 'Creando cuenta…'; btn.disabled = true; btn.style.opacity = '.7'; }
+  const { data, error } = await _sb.auth.signUp({
+    email, password,
+    options: { data: { nombre, apellido, pais, telefono, ciudad, tipo: 'cliente' } }
+  });
+  if (error) {
+    if (btn) { btn.textContent = 'Crear cuenta gratis'; btn.disabled = false; btn.style.opacity = '1'; }
+    alert(error.message.includes('already registered') ? 'Este correo ya está registrado. Intenta iniciar sesión.' : error.message);
+    return;
+  }
+  if (data.user) {
+    await _sb.from('usuarios').upsert({ id: data.user.id, email, nombre, apellido, pais, telefono, ciudad });
+  }
+  document.getElementById('mBody').innerHTML = `
     <div class="confirm">
       <div class="confirm-ico">🎉</div>
       <h3>¡Cuenta creada!</h3>
-      <p>Bienvenido a AbogaMéxico. Revisa tu correo para verificar tu cuenta y empieza a buscar tu abogado.</p>
+      <p>Bienvenido, <strong>${nombre}</strong>. Revisa tu correo <strong>${email}</strong> para verificar tu cuenta.</p>
       <div class="confirm-btns" style="margin-top:20px">
         <button class="btn btn-gold" onclick="closeModal()">Comenzar</button>
       </div>
-    </div>`;},1600);
+    </div>`;
 }
-function simRegLawyer(){
-  const ced=document.getElementById('cedula')?.value||'';
-  if(!ced||ced.length<6){
-    const m=document.getElementById('cedMsg');
-    if(m){m.className='ferr';m.textContent='Por favor ingresa tu cédula profesional válida.';}
+
+async function simRegLawyer(){
+  const cedula = document.getElementById('cedula')?.value || '';
+  if (!cedula || cedula.length < 6) {
+    const m = document.getElementById('cedMsg');
+    if (m) { m.className = 'ferr'; m.textContent = 'Ingresa tu cédula profesional válida.'; }
     document.getElementById('cedula')?.focus(); return;
   }
-  const btn=document.querySelector('.btn.btn-gold.btn-full');
-  if(btn){btn.textContent='Enviando solicitud…';btn.disabled=true;}
-  setTimeout(()=>{document.getElementById('mBody').innerHTML=`
+  const btn = document.querySelector('.btn.btn-gold.btn-full');
+  const inputs = document.querySelectorAll('.m-body input');
+  const selects = document.querySelectorAll('.m-body select');
+  const nombre = inputs[0]?.value?.trim();
+  const apellido = inputs[1]?.value?.trim();
+  const email = inputs[2]?.value?.trim();
+  const telefono = inputs[3]?.value?.trim();
+  const estado = selects[0]?.value;
+  const ciudad = inputs[5]?.value?.trim();
+  const especialidad = selects[1]?.value;
+  const bio = document.querySelector('.m-body textarea')?.value?.trim();
+  const password = inputs[6]?.value?.trim();
+  if (!nombre || !email || !password) { alert('Completa nombre, correo y contraseña.'); return; }
+  if (password.length < 8) { alert('La contraseña debe tener al menos 8 caracteres.'); return; }
+  if (btn) { btn.textContent = 'Enviando solicitud…'; btn.disabled = true; btn.style.opacity = '.7'; }
+  const { data, error } = await _sb.auth.signUp({
+    email, password,
+    options: { data: { nombre, apellido, tipo: 'abogado', cedula, especialidad } }
+  });
+  if (error) {
+    if (btn) { btn.textContent = 'Solicitar ingreso'; btn.disabled = false; btn.style.opacity = '1'; }
+    alert(error.message.includes('already registered') ? 'Este correo ya está registrado.' : error.message);
+    return;
+  }
+  if (data.user) {
+    await _sb.from('abogados').upsert({
+      id: data.user.id, email, nombre, apellido, telefono,
+      cedula, especialidad, estado, ciudad, bio, verificado: false
+    });
+  }
+  document.getElementById('mBody').innerHTML = `
     <div class="confirm">
       <div class="confirm-ico">⚖️</div>
       <h3>Solicitud enviada</h3>
-      <p>Recibimos tu registro. Verificaremos la cédula <strong>${ced}</strong> con la SEP y te notificaremos en 24–48 horas para activar tu perfil.</p>
+      <p>Recibimos tu registro, <strong>${nombre}</strong>. Verificaremos tu cédula <strong>${cedula}</strong> con la SEP en 24–48 horas.</p>
       <div class="confirm-btns" style="margin-top:20px">
         <button class="btn btn-gold" onclick="closeModal()">Entendido</button>
       </div>
-    </div>`;},1900);
+    </div>`;
 }
+
 </script>
 
 
